@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "queue.h"
-#include "stack.h"
-#include "buku.h"
-#include "convention.h"
+#include "driver.h"
 
 void otomatisdll(addrBuku *daftarBuku, address *allAnggota) {
 

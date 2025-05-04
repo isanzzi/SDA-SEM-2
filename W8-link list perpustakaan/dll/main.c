@@ -1,5 +1,5 @@
 #include "convention.h"
-#include "driver.c"
+#include "driver.h"
 #include "buku.h"
 #include "linked.h"
 #include "history.h"
