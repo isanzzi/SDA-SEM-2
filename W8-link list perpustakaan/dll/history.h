@@ -29,5 +29,6 @@ typedef struct {
 addresshistory createHistoryNode(infotype bookTitle, char action, char status, addrBuku bookref, address memberref);
 void addHistory(address member, infotype bookTitle, char action, char status, addrBuku bookref);
 void displayHistory(address member);
+void freeHistory(Stackhistory *history);
 
 #endif

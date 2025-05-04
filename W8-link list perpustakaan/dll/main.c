@@ -31,8 +31,14 @@ void maindll() {
 		scanf("%c", &reset);
 		getchar();
 		if (reset=='y'){
-			freeBuku(&headbuku);
-			headbuku = NULL;
+            address temp;
+            while (allanggota != NULL) {
+                temp = allanggota;
+                allanggota = allanggota->next;
+                freeHistory(&temp->history);
+                free(temp);
+            }
+            allanggota = NULL;
 		}
     }
 
@@ -226,6 +232,7 @@ void maindll() {
     while (allanggota != NULL) {
         temp = allanggota;
         allanggota = allanggota->next;
+        freeHistory(&temp->history);
         free(temp);
     }
 }

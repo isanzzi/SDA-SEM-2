@@ -35,7 +35,7 @@ void displayHistory(address member) {
         return;
     }
     
-    printf("History for %s:\n", info(member));
+    printf("History for %s:\n", info(member) ? info(member) : "Unknown");
     if (member->history.top == NULL) {
         printf("No history available\n");
         return;
@@ -61,7 +61,32 @@ void displayHistory(address member) {
             default: strcpy(statusStr, "Unknown");
         }
         
-        printf("%-20s %-10s %-10s\n", current->info, actionStr, statusStr);
+        printf("%-20s %-10s %-10s\n", 
+               current->info ? current->info : "Unknown", 
+               actionStr, 
+               statusStr);
         current = current->next;
     }
+}
+
+void freeHistory(Stackhistory *history) {
+    addresshistory current, temp;
+    
+    current = history->top;
+    
+    while (current != NULL) {
+        temp = current;
+        current = current->next;
+        
+        // Free the book title string
+        if (temp->info != NULL) {
+            free(temp->info);
+        }
+        
+        // Free node
+        free(temp);
+    }
+    
+    // Reset pointer stack top
+    history->top = NULL;
 }
