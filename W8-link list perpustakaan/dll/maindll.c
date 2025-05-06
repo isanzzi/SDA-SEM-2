@@ -95,46 +95,46 @@ void maindll() {
             }
             
 			case 3: {
-    addrBuku bukuDipesan = findBuku(headbuku, insertTitle());
-    if (bukuDipesan == NULL) {
-        printf("Buku tidak ditemukan!\n");
-        break;
-    }
-    
-    char* peminjamName = insertNama();
-    address nodePeminjam = NULL;
-    
-    // cek jika anggota sudah pernah ada
-    nodePeminjam = Search(allanggota, peminjamName);
-    
-    if (nodePeminjam == NULL) { // jika member tidak ditemukan
-        printf("Anggota baru, ");
-        int level = initlevel();
-        char* peminjamCopy = strdup(peminjamName);
-        nodePeminjam = SetNode(&peminjamCopy, level);
-        
-        // Add to the global member list
-        Ins_Awal(&allanggota, nodePeminjam);
-        printf("Anggota baru telah ditambahkan ke sistem.\n");
-    } else {
-        printf("Menggunakan data anggota yang sudah ada (level: %d).\n", nodePeminjam->level);
-    }
-    
-    free(peminjamName);
-    
-    // Instead of creating a completely new node, just add the member's reference to the queue
-    // We still need to create a queue node since we don't want to remove the member from allanggota
-    address queueNode = SetNode(&(nodePeminjam->info), nodePeminjam->level);
-    
-    // Add the member to the book's queue
-    enqueue(&bukuDipesan->Q, queueNode);
-    
-    // Add this booking to the member's history
-    addHistory(nodePeminjam, bukuDipesan->info, 'c', 's', bukuDipesan);
-    
-    printf("Pemesanan berhasil ditambahkan ke antrian!\n");
-    break;
-}
+            addrBuku bukuDipesan = findBuku(headbuku, insertTitle());
+            if (bukuDipesan == NULL) {
+                printf("Buku tidak ditemukan!\n");
+                break;
+            }
+            
+            char* peminjamName = insertNama();
+            address nodePeminjam = NULL;
+            
+            // cek jika anggota sudah pernah ada
+            nodePeminjam = Search(allanggota, peminjamName);
+            
+            if (nodePeminjam == NULL) { // jika member tidak ditemukan
+                printf("Anggota baru, ");
+                int level = initlevel();
+                char* peminjamCopy = strdup(peminjamName);
+                nodePeminjam = SetNode(&peminjamCopy, level);
+                
+                // Add to the global member list
+                Ins_Awal(&allanggota, nodePeminjam);
+                printf("Anggota baru telah ditambahkan ke sistem.\n");
+            } else {
+                printf("Menggunakan data anggota yang sudah ada (level: %d).\n", nodePeminjam->level);
+            }
+            
+            free(peminjamName);
+            
+            // Instead of creating a completely new node, just add the member's reference to the queue
+            // We still need to create a queue node since we don't want to remove the member from allanggota
+            address queueNode = SetNode(&(nodePeminjam->info), nodePeminjam->level);
+            
+            // Add the member to the book's queue
+            enqueue(&bukuDipesan->Q, queueNode);
+            
+            // Add this booking to the member's history
+            addHistory(nodePeminjam, bukuDipesan->info, 'c', 's', bukuDipesan);
+            
+            printf("Pemesanan berhasil ditambahkan ke antrian!\n");
+            break;
+            }
 			
 			case 4: {
 				addrBuku bukuDiproses = findBuku(headbuku, insertTitle());
@@ -235,10 +235,4 @@ void maindll() {
         freeHistory(&temp->history);
         free(temp);
     }
-}
-
-int main() {
-    printf("===== SISTEM PERPUSTAKAAN =====\n");
-    maindll();
-    return 0;
 }

@@ -23,7 +23,28 @@ int initstock() {
     return stock;
 }
 
-void mainarray(Buku buku[], int maxbuku) {
+void mainarray() {
+    int maxbuku;
+    printf("maxbuku minimal 3\nMasukkan maxbuku : ");
+    scanf("%d", &maxbuku);
+    if (maxbuku < 3) {
+        printf("Jumlah buku terlalu sedikit. Program berakhir.\n");
+        return;
+
+    }
+    
+    Buku buku[maxbuku];
+    
+    int i = 0;
+    while (i < maxbuku) {
+        buku[i].info = NULL;
+        buku[i].stock = 0;
+        createinitQueue(&buku[i].Q);
+        i++;
+    }
+    
+    printf("===== SISTEM PERPUSTAKAAN =====\n");
+    bukuCount = 0;
     printf("apakah anda ingin otomatis mengisi test case? (y/n)\nMasukkan jawaban anda : ");
     char otomatis;
     scanf(" %c", &otomatis);
@@ -327,31 +348,6 @@ void mainarray(Buku buku[], int maxbuku) {
         freeHistory(&temp->history);
         free(temp);
     }
-}
-
-int main() {
-    int maxbuku;
-    printf("maxbuku minimal 3\nMasukkan maxbuku : ");
-    scanf("%d", &maxbuku);
-    if (maxbuku < 3) {
-        printf("Jumlah buku terlalu sedikit. Program berakhir.\n");
-        return -1;
-    }
-    
-    Buku buku[maxbuku];
-    
-    int i = 0;
-    while (i < maxbuku) {
-        buku[i].info = NULL;
-        buku[i].stock = 0;
-        createinitQueue(&buku[i].Q);
-        i++;
-    }
-    
-    printf("===== SISTEM PERPUSTAKAAN =====\n");
-    bukuCount = 0;
-    mainarray(buku, maxbuku);
-    return 0;
 }
 
 void otomatisarray(Buku buku[], address *allAnggota, int *pBukuCount, int maxBuku) {
