@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "buku.h"
+#include "bukuarray.h"
 
-addrBuku findBukuArray(Buku buku[], char *judul, int count) {
+addrBukuarray findBukuArray(Bukuarray buku[], char *judul, int count) {
     int i = 0;
     while (i < count) {
         if (strcmp(buku[i].info, judul) == 0) {
@@ -14,7 +14,7 @@ addrBuku findBukuArray(Buku buku[], char *judul, int count) {
     return NULL;
 }
 
-void addBukuArray(Buku buku[], char *judul, int jumlah, int *count, int maxCount) {
+void addBukuArray(Bukuarray buku[], char *judul, int jumlah, int *count, int maxCount) {
     if (*count >= maxCount) {
         printf("Array buku sudah penuh!\n");
         free(judul);
@@ -40,12 +40,12 @@ void addBukuArray(Buku buku[], char *judul, int jumlah, int *count, int maxCount
     // Add the new book
     buku[*count].info = judul;
     buku[*count].stock = jumlah;
-    createinitQueue(&(buku[*count].Q));
+    createinitQueueArray(&(buku[*count].Q));
     (*count)++;
     printf("Buku berhasil ditambahkan!\n");
 }
 
-void displayBukuArray(Buku buku[], int count) {
+void displayBukuArray(Bukuarray buku[], int count) {
     if (count == 0) {
         printf("Tidak ada buku\n");
         return;
@@ -54,7 +54,7 @@ void displayBukuArray(Buku buku[], int count) {
     int i = 0;
     while (i < count) {
         int queueLength = 0;
-        address waitlistHead = buku[i].Q.head;
+        addressarray waitlistHead = buku[i].Q.head;
         
         printf("Buku: %s (Tersedia: %d)\n", buku[i].info, buku[i].stock);
         
@@ -75,11 +75,11 @@ void displayBukuArray(Buku buku[], int count) {
     }
 }
 
-void freeBukuArray(Buku buku[], int count) {
+void freeBukuArray(Bukuarray buku[], int count) {
     int i = 0;
     while (i < count) {
         free(buku[i].info);
-        DeAlokasi(&(buku[i].Q.head));
+        DeAlokasiArray(&(buku[i].Q.head));
         i++;
     }
 }

@@ -31,7 +31,7 @@ int mainsll() {
     getchar();
     
     if (otomatis == 'y') {
-        otomatisdll(&headbuku, &allanggota);
+        otomatissll(&headbuku, &allanggota);
         printf("Apakah anda ingin mereset ulang semua buku? (y/n)\nMasukkan jawaban anda: ");
         char reset;
         scanf("%c", &reset);
@@ -198,4 +198,9 @@ int mainsll() {
                 printf("Pilihan tidak valid!\n");
         }
     }
+}
+
+int main(){
+    mainsll();
+    return 0;
 }

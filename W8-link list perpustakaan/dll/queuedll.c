@@ -1,14 +1,14 @@
-#include "queue.h"
+#include "queuedll.h"
 
-void enqueue(Queue *Q, address node) {
-    if (isEmpty(Q->head)) {
+void enqueuedll(Queuedll *Q, addressdll node) {
+    if (isEmptydll(Q->head)) {
         Q->head = node;
         Q->tail = node;
         node->next = NULL;
         return;
     } else {
-        modifiedIns_Akhir(&(Q->head), node);
-        address temp = Q->head;
+        modifiedIns_Akhirdll(&(Q->head), node);
+        addressdll temp = Q->head;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -16,12 +16,12 @@ void enqueue(Queue *Q, address node) {
     }
 }
 
-address searchbeforepriority (address head){
+addressdll searchbeforeprioritydll(addressdll head){
     if (head==NULL || head->next ==NULL){
         printf ("List kosong");
         return NULL;
     }
-    address temp = head;
+    addressdll temp = head;
     while (temp != NULL){
         if (temp->next->level==1){
             return temp;
@@ -46,8 +46,8 @@ address searchbeforepriority (address head){
     return NULL;
 }
 
-void SongNow (Queue *Q){
-    if (!isEmpty(Q->head)){
+void SongNowdll(Queuedll *Q){
+    if (!isEmptydll(Q->head)){
         printf ("%s", Q->head->info);    
     } else {
         printf ("queue is empty");
@@ -55,9 +55,9 @@ void SongNow (Queue *Q){
     printf ("\n");
 }
 
-void PrintNextSong (Queue *Q){
+void PrintNextSongdll(Queuedll *Q){
     printf ("Next song will be : ");
-    if (!isEmpty(Q->head) && Q->head->next != nil) {
+    if (!isEmptydll(Q->head) && Q->head->next != nil) {
         printf ("%s", Q->head->next->info);
     } else {
         printf ("no next song in queue");
@@ -65,9 +65,9 @@ void PrintNextSong (Queue *Q){
     printf ("\n");
 }
 
-void dequeue (Queue *Q, infotype *nilai){
-    if (!isEmpty(Q->head)) {
-        Del_Awal(&Q->head, nilai);
+void dequeuedll(Queuedll *Q, infotype *nilai){
+    if (!isEmptydll(Q->head)) {
+        Del_Awaldll(&Q->head, nilai);
         if (Q->head == nil) {
             Q->tail = nil;
         }
@@ -75,22 +75,22 @@ void dequeue (Queue *Q, infotype *nilai){
     }
 }
 
-void dequeueandprint(Queue *Q) {
+void dequeueandprintdll(Queuedll *Q) {
     infotype nilai;
-    if (!isEmpty(Q->head)) {
-        dequeue(Q, &nilai);
+    if (!isEmptydll(Q->head)) {
+        dequeuedll(Q, &nilai);
         printf("Lagu yang telah selesai adalah %s\n", nilai);
     } else {
         printf("Queue kosong\n");
     }
 }
 
-void createinitQueue(Queue *Q1){
+void createinitQueuedll(Queuedll *Q1){
     Q1->head = nil;
     Q1->tail = nil;
 }
 
-void ExitQueue (Queue *Q1){
-    DeAlokasi(&(Q1->head));
+void ExitQueuedll(Queuedll *Q1){
+    DeAlokasidll(&(Q1->head));
     Q1->tail = nil;
 }

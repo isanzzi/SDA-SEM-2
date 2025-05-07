@@ -1,14 +1,14 @@
-#include "queue.h"
+#include "queuearray.h"
 
-void enqueue(Queue *Q, address node) {
-    if (isEmpty(Q->head)) {
+void enqueueArray(Queuearray *Q, addressarray node) {
+    if (isEmptyarray(Q->head)) {
         Q->head = node;
         Q->tail = node;
         node->next = NULL;
         return;
     } else {
-        modifiedIns_Akhir(&(Q->head), node);
-        address temp = Q->head;
+        modifiedIns_AkhirArray(&(Q->head), node);
+        addressarray temp = Q->head;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -16,12 +16,12 @@ void enqueue(Queue *Q, address node) {
     }
 }
 
-address searchbeforepriority (address head){
+addressarray searchbeforepriorityArray(addressarray head){
     if (head==NULL || head->next ==NULL){
         printf ("List kosong");
         return NULL;
     }
-    address temp = head;
+    addressarray temp = head;
     while (temp != NULL){
         if (temp->next->level==1){
             return temp;
@@ -42,12 +42,11 @@ address searchbeforepriority (address head){
         }
         temp=temp->next;
     }
-
     return NULL;
 }
 
-void SongNow (Queue *Q){
-    if (!isEmpty(Q->head)){
+void SongNowArray (Queuearray *Q){
+    if (!isEmptyarray(Q->head)){
         printf ("%s", Q->head->info);    
     } else {
         printf ("queue is empty");
@@ -55,9 +54,9 @@ void SongNow (Queue *Q){
     printf ("\n");
 }
 
-void PrintNextSong (Queue *Q){
+void PrintNextSongArray (Queuearray *Q){
     printf ("Next song will be : ");
-    if (!isEmpty(Q->head) && Q->head->next != nil) {
+    if (!isEmptyarray(Q->head) && Q->head->next != nil) {
         printf ("%s", Q->head->next->info);
     } else {
         printf ("no next song in queue");
@@ -65,32 +64,31 @@ void PrintNextSong (Queue *Q){
     printf ("\n");
 }
 
-void dequeue (Queue *Q, infotype *nilai){
-    if (!isEmpty(Q->head)) {
-        Del_Awal(&Q->head, nilai);
+void dequeueArray (Queuearray *Q, infotype *nilai){
+    if (!isEmptyarray(Q->head)) {
+        Del_AwalArray(&Q->head, nilai);
         if (Q->head == nil) {
             Q->tail = nil;
         }
-
     }
 }
 
-void dequeueandprint(Queue *Q) {
+void dequeueandprintArray(Queuearray *Q) {
     infotype nilai;
-    if (!isEmpty(Q->head)) {
-        dequeue(Q, &nilai);
+    if (!isEmptyarray(Q->head)) {
+        dequeueArray(Q, &nilai);
         printf("Lagu yang telah selesai adalah %s\n", nilai);
     } else {
         printf("Queue kosong\n");
     }
 }
 
-void createinitQueue(Queue *Q1){
+void createinitQueueArray(Queuearray *Q1){
     Q1->head = nil;
     Q1->tail = nil;
 }
 
-void ExitQueue (Queue *Q1){
-    DeAlokasi(&(Q1->head));
+void ExitQueueArray (Queuearray *Q1){
+    DeAlokasiArray(&(Q1->head));
     Q1->tail = nil;
 }

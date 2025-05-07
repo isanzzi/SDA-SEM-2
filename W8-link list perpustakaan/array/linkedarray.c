@@ -1,6 +1,6 @@
-#include "linked.h"
+#include "linkedarray.h"
 
-boolean isEmpty(address p) {
+boolean isEmptyarray(addressarray p) {
     if (p==nil){
         return true;
     } else{
@@ -8,15 +8,15 @@ boolean isEmpty(address p) {
     }
 }
 
-void CreateEmpty(address *q) {
+void CreateEmptyarray(addressarray *q) {
     *q = nil;
 }
 
-void Create_Node(address *p) {
-    *p = (address)malloc(sizeof(Anggota));
+void Create_Nodearray(addressarray *p) {
+    *p = (addressarray)malloc(sizeof(Anggotaarray));
 }
 
-void Isi_Node(address *p, infotype nama, int prior) {
+void Isi_Nodearray(addressarray *p, infotype nama, int prior) {
     if (*p != nil) {
         info(*p) = nama;
         lvl(*p) = prior;
@@ -25,7 +25,7 @@ void Isi_Node(address *p, infotype nama, int prior) {
     }
 }
 
-char* InsertTitle(){
+char* InsertTitleArray(){
     char *P = (char*) malloc (50 *sizeof(char));
     if (P == nil){
         printf ("allocation title failed\n");
@@ -36,7 +36,7 @@ char* InsertTitle(){
     return P;
 }
 
-char* insertNama(){
+char* insertNamaArray(){
     char *P = (char*) malloc (50 *sizeof(char));
     if (P == nil){
         printf ("allocation name failed\n");
@@ -47,9 +47,9 @@ char* insertNama(){
     return P;
 }
 
-address SetNode (infotype *nilai, int prior){
-    address P;
-    Create_Node (&P);
+addressarray SetNodeArray (infotype *nilai, int prior){
+    addressarray P;
+    Create_Nodearray (&P);
     if (P == NULL) {
         printf("Memory allocation failed\n");
         return NULL;
@@ -60,13 +60,13 @@ address SetNode (infotype *nilai, int prior){
     return P;
 }
 
-void Tampil_List(address p) {
-    if (isEmpty(p)) {
+void Tampil_ListArray(addressarray p) {
+    if (isEmptyarray(p)) {
         printf("Empty List\n");
         return;
     }
     
-    address temp = p;
+    addressarray temp = p;
     while (temp != nil) {
         printf("%s", info(temp));
         if (next(temp) != nil) {
@@ -77,7 +77,7 @@ void Tampil_List(address p) {
     printf("\n");
 }
 
-address Search(address p, infotype nilai) {
+addressarray SearchArray(addressarray p, infotype nilai) {
     while (p != nil) {
         if (nilai != NULL && info(p) != NULL && strcmp(info(p), nilai) == 0) {
             return p;
@@ -87,8 +87,8 @@ address Search(address p, infotype nilai) {
     return nil;
 }
 
-void Ins_Awal(address *p, address PNew) {
-    if (isEmpty(*p)) {
+void Ins_AwalArray(addressarray *p, addressarray PNew) {
+    if (isEmptyarray(*p)) {
         *p = PNew;
     } else {
         next(PNew) = *p;
@@ -96,11 +96,11 @@ void Ins_Awal(address *p, address PNew) {
     }
 }
 
-void Ins_Akhir(address *p, address PNew) {
-    if (isEmpty(*p)) {
+void Ins_AkhirArray(addressarray *p, addressarray PNew) {
+    if (isEmptyarray(*p)) {
         *p = PNew;
     } else {
-        address temp = *p;
+        addressarray temp = *p;
         while (next(temp) != nil) {
             temp = next(temp);
         }
@@ -108,8 +108,8 @@ void Ins_Akhir(address *p, address PNew) {
     }
 }
 
-void modifiedIns_Akhir(address *p, address PNew) {
-    if (isEmpty(*p)) {
+void modifiedIns_AkhirArray(addressarray *p, addressarray PNew) {
+    if (isEmptyarray(*p)) {
         *p = PNew;
         next(PNew) = NULL;
         return;
@@ -121,8 +121,8 @@ void modifiedIns_Akhir(address *p, address PNew) {
         return;
     }
     
-    address current = *p;
-    address prev = NULL;
+    addressarray current = *p;
+    addressarray prev = NULL;
     
     while (current != NULL && lvl(current) <= lvl(PNew)) {
         if (lvl(current) > lvl(PNew)) {
@@ -136,31 +136,31 @@ void modifiedIns_Akhir(address *p, address PNew) {
     next(PNew) = current;
 }
 
-void InsertAfter(address *pBef, address PNew) {
+void InsertAfterArray(addressarray *pBef, addressarray PNew) {
     if (*pBef != nil) {
         next(PNew) = next(*pBef);
         next(*pBef) = PNew;
     }
 }
 
-void Del_Awal(address *p, infotype *X) {
-    if (!isEmpty(*p)) {
-        address temp = *p;
+void Del_AwalArray(addressarray *p, infotype *X) {
+    if (!isEmptyarray(*p)) {
+        addressarray temp = *p;
         *X = info(temp);
         *p = next(temp);
         free(temp);
     }
 }
 
-void Del_Akhir(address *p, infotype *X) {
-    if (isEmpty(*p)) return;
+void Del_AkhirArray(addressarray *p, infotype *X) {
+    if (isEmptyarray(*p)) return;
 
     if (next(*p) == nil) {
         *X = info(*p);
         free(*p);
         *p = nil;
     } else {
-        address temp = *p;
+        addressarray temp = *p;
         while (next(next(temp)) != nil) {
             temp = next(temp);
         }
@@ -170,21 +170,21 @@ void Del_Akhir(address *p, infotype *X) {
     }
 }
 
-boolean DeleteValue(address *p, infotype target, infotype *X) {
+boolean DeleteValueArray(addressarray *p, infotype target, infotype *X) {
     if (*p == nil) {
         return false;
     }
 
     if (strcmp(info(*p), target) == 0) {
         *X = info(*p);
-        address temp = *p;
+        addressarray temp = *p;
         *p = next(temp);
         next(temp) = nil; // Disconnect from list
         return true;
     }
 
-    address prev = *p;
-    address temp = next(prev);
+    addressarray prev = *p;
+    addressarray temp = next(prev);
 
     while (temp != nil && strcmp(info(temp), target) != 0) {
         prev = temp;
@@ -201,8 +201,8 @@ boolean DeleteValue(address *p, infotype target, infotype *X) {
     return false; // Not found
 }
 
-void DeAlokasi(address *p) {
-    address temp;
+void DeAlokasiArray(addressarray *p) {
+    addressarray temp;
     while (*p != nil) {
         temp = *p;
         *p = next(temp);
@@ -213,18 +213,18 @@ void DeAlokasi(address *p) {
     }
 }
 
-int NbElmt(address p) {
+int NbElmtArray(addressarray p) {
     if (p == nil) return 0;
-    return 1 + NbElmt(next(p));
+    return 1 + NbElmtArray(next(p));
 }
 
-void ModifyString(infotype *str) {
+void ModifyStringArray(infotype *str) {
     printf("Current string: %s\n", *str);
     free(*str);  // Free old string
-    *str = InsertTitle();  // Allocate and assign new string
+    *str = InsertTitleArray();  // Allocate and assign new string
 }
 
-int initlevel(){
+int initlevelArray(){
     printf("Masukkan level prioritas (1=Dosen, 2=Mahasiswa, 3=Umum): ");
     int level;
     scanf("%d", &level);

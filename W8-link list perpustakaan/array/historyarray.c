@@ -1,50 +1,42 @@
-#include "history.h"
-#include "linked.h"
+#include "historyarray.h"
+#include "linkedarray.h"
 
-addresshistory createHistoryNode(infotype bookTitle, char action, char status, addrBuku bookref, address memberref) {
-    addresshistory newNode = (addresshistory)malloc(sizeof(History));
+addresshistoryarray createHistoryNodeArray(infotype bookTitle, char action, char status, addrBukuarray bookref, addressarray memberref) {
+    addresshistoryarray newNode = (addresshistoryarray)malloc(sizeof(Historyarray));
     if (newNode == NULL) {
         printf("Memory allocation failed\n");
         return NULL;
     }
-    
     newNode->info = strdup(bookTitle);
     newNode->action = action;
     newNode->status = status;
     newNode->bookref = bookref;
     newNode->memberref = memberref;
     newNode->next = NULL;
-    
     return newNode;
 }
 
-void addHistory(address member, infotype bookTitle, char action, char status, addrBuku bookref) {
+void addHistoryArray(addressarray member, infotype bookTitle, char action, char status, addrBukuarray bookref) {
     if (member == NULL) return;
-    
-    addresshistory newHistory = createHistoryNode(bookTitle, action, status, bookref, member);
+    addresshistoryarray newHistory = createHistoryNodeArray(bookTitle, action, status, bookref, member);
     if (newHistory == NULL) return;
-    
-    // Add to stack (insert at beginning)
     newHistory->next = member->history.top;
     member->history.top = newHistory;
 }
 
-void displayHistory(address member) {
+void displayHistoryArray(addressarray member) {
     if (member == NULL) {
         printf("Member not found\n");
         return;
     }
-    
     printf("History for member '%s':\n", info(member));
     if (member->history.top == NULL) {
         printf("No history available\n");
         return;
     }
-    
     printf("%-20s %-10s %-10s\n", "Book", "Action", "Status");
     printf("----------------------------------------\n");
-    
-    addresshistory current = member->history.top;
+    addresshistoryarray current = member->history.top;
     while (current != NULL) {
         char actionStr[20];
         switch (current->action) {
@@ -53,37 +45,27 @@ void displayHistory(address member) {
             case 'c': strcpy(actionStr, "Cancel"); break;
             default: strcpy(actionStr, "Unknown");
         }
-        
         char statusStr[20];
         switch (current->status) {
             case 's': strcpy(statusStr, "Success"); break;
             case 'f': strcpy(statusStr, "Failed"); break;
             default: strcpy(statusStr, "Unknown");
         }
-        
         printf("%-20s %-10s %-10s\n", current->info, actionStr, statusStr);
         current = current->next;
     }
 }
 
-void freeHistory(Stackhistory *history) {
-    addresshistory current, temp;
-    
+void freeHistoryArray(Stackhistoryarray *history) {
+    addresshistoryarray current, temp;
     current = history->top;
-    
     while (current != NULL) {
         temp = current;
         current = current->next;
-        
-        // Free the book title string
         if (temp->info != NULL) {
             free(temp->info);
         }
-        
-        // Free node
         free(temp);
     }
-    
-    // Reset pointer stack top
     history->top = NULL;
 }

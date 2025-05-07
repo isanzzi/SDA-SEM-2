@@ -13,15 +13,14 @@
 
 typedef char* infotype;
 
-struct tElmtList;
-struct bukuNode;
-struct riwayat;
+struct tElmtListArray;
+struct bukuNodeArray;
+struct riwayatArray;
 
-typedef struct tElmtList *address;
-typedef struct bukuNode *addrBuku;
-typedef struct riwayat *addresshistory;
+typedef struct tElmtListArray *addressarray;
+typedef struct bukuNodeArray *addrBukuarray;
+typedef struct riwayatArray *addresshistoryarray;
 
-// Common macros
 #define info(P) (P)->info
 #define next(P) (P)->next
 #define level(P) (P)->level

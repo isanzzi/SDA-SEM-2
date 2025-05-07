@@ -6,6 +6,6 @@
 #include "convention.h"
 #include "linked.h"
 
-void otomatisdll (address *daftarBuku, address *allAnggota);
+void otomatissll (address *daftarBuku, address *allAnggota);
 
 #endif
