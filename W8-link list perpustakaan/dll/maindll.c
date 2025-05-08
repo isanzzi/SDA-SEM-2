@@ -230,9 +230,7 @@ void maindll() {
     while (allanggota != NULL) {
         temp = allanggota;
         allanggota = allanggota->next;
-        if (&temp->history != nil) {
-            freeHistory(&temp->history);
-        }
+        freeHistory(&temp->history);
         free(temp);
-	}
+    }
 }
