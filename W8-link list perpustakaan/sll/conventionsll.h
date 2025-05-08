@@ -8,11 +8,11 @@
 #define mahasiswa 2
 #define umum 3
 
-typedef char* infotype;
-typedef int boolean;
+typedef char* infotypesll;
+typedef int booleansll;
 
-struct tElmtList;
-typedef struct tElmtList *address, *addrBuku;
+struct tElmtListsll;
+typedef struct tElmtListsll *addresssll, *addrBukusll;
 
 #define info(P) (P)->info
 #define next(P) (P)->next

@@ -1,6 +1,6 @@
-#include "linkeddll.h"
+#include "linked.h"
 
-boolean isEmptydll(addressdll p) {
+boolean isEmpty(address p) {
     if (p==nil){
         return true;
     } else{
@@ -8,15 +8,15 @@ boolean isEmptydll(addressdll p) {
     }
 }
 
-void CreateEmptydll(addressdll *q) {
+void CreateEmpty(address *q) {
     *q = nil;
 }
 
-void Create_Nodedll(addressdll *p) {
-    *p = (addressdll)malloc(sizeof(Anggotadll));
+void Create_Node(address *p) {
+    *p = (address)malloc(sizeof(Anggota));
 }
 
-void Isi_Nodedll(addressdll *p, infotype nama, int prior) {
+void Isi_Node(address *p, infotype nama, int prior) {
     if (*p != nil) {
         info(*p) = nama;
         lvl(*p) = prior;
@@ -25,7 +25,7 @@ void Isi_Nodedll(addressdll *p, infotype nama, int prior) {
     }
 }
 
-char* InsertTitledll(){
+char* InsertTitle(){
     char *P = (char*) malloc (50 *sizeof(char));
     if (P == nil){
         printf ("allocation title failed\n");
@@ -36,7 +36,7 @@ char* InsertTitledll(){
     return P;
 }
 
-char* insertNamadll(){
+char* insertNama(){
     char *P = (char*) malloc (50 *sizeof(char));
     if (P == nil){
         printf ("allocation name failed\n");
@@ -47,9 +47,9 @@ char* insertNamadll(){
     return P;
 }
 
-addressdll SetNodedll(infotype *nilai, int prior){
-    addressdll P;
-    Create_Nodedll(&P);
+address SetNode (infotype *nilai, int prior){
+    address P;
+    Create_Node (&P);
     if (P == NULL) {
         printf("Memory allocation failed\n");
         return NULL;
@@ -60,13 +60,13 @@ addressdll SetNodedll(infotype *nilai, int prior){
     return P;
 }
 
-void Tampil_Listdll(addressdll p) {
-    if (isEmptydll(p)) {
+void Tampil_List(address p) {
+    if (isEmpty(p)) {
         printf("Empty List\n");
         return;
     }
     
-    addressdll temp = p;
+    address temp = p;
     while (temp != nil) {
         printf("%s", info(temp));
         if (next(temp) != nil) {
@@ -77,7 +77,7 @@ void Tampil_Listdll(addressdll p) {
     printf("\n");
 }
 
-addressdll Searchdll(addressdll p, infotype nilai) {
+address Search(address p, infotype nilai) {
     while (p != nil) {
         if (nilai != NULL && info(p) != NULL && strcmp(info(p), nilai) == 0) {
             return p;
@@ -87,8 +87,8 @@ addressdll Searchdll(addressdll p, infotype nilai) {
     return nil;
 }
 
-void Ins_Awaldll(addressdll *p, addressdll PNew) {
-    if (isEmptydll(*p)) {
+void Ins_Awal(address *p, address PNew) {
+    if (isEmpty(*p)) {
         *p = PNew;
     } else {
         next(PNew) = *p;
@@ -96,11 +96,11 @@ void Ins_Awaldll(addressdll *p, addressdll PNew) {
     }
 }
 
-void Ins_Akhirdll(addressdll *p, addressdll PNew) {
-    if (isEmptydll(*p)) {
+void Ins_Akhir(address *p, address PNew) {
+    if (isEmpty(*p)) {
         *p = PNew;
     } else {
-        addressdll temp = *p;
+        address temp = *p;
         while (next(temp) != nil) {
             temp = next(temp);
         }
@@ -108,8 +108,8 @@ void Ins_Akhirdll(addressdll *p, addressdll PNew) {
     }
 }
 
-void modifiedIns_Akhirdll(addressdll *p, addressdll PNew) {
-    if (isEmptydll(*p)) {
+void modifiedIns_Akhir(address *p, address PNew) {
+    if (isEmpty(*p)) {
         *p = PNew;
         next(PNew) = NULL;
         return;
@@ -121,8 +121,8 @@ void modifiedIns_Akhirdll(addressdll *p, addressdll PNew) {
         return;
     }
     
-    addressdll current = *p;
-    addressdll prev = NULL;
+    address current = *p;
+    address prev = NULL;
     
     while (current != NULL && lvl(current) <= lvl(PNew)) {
         if (lvl(current) > lvl(PNew)) {
@@ -136,31 +136,31 @@ void modifiedIns_Akhirdll(addressdll *p, addressdll PNew) {
     next(PNew) = current;
 }
 
-void InsertAfterdll(addressdll *pBef, addressdll PNew) {
+void InsertAfter(address *pBef, address PNew) {
     if (*pBef != nil) {
         next(PNew) = next(*pBef);
         next(*pBef) = PNew;
     }
 }
 
-void Del_Awaldll(addressdll *p, infotype *X) {
-    if (!isEmptydll(*p)) {
-        addressdll temp = *p;
+void Del_Awal(address *p, infotype *X) {
+    if (!isEmpty(*p)) {
+        address temp = *p;
         *X = info(temp);
         *p = next(temp);
         free(temp);
     }
 }
 
-void Del_Akhirdll(addressdll *p, infotype *X) {
-    if (isEmptydll(*p)) return;
+void Del_Akhir(address *p, infotype *X) {
+    if (isEmpty(*p)) return;
 
     if (next(*p) == nil) {
         *X = info(*p);
         free(*p);
         *p = nil;
     } else {
-        addressdll temp = *p;
+        address temp = *p;
         while (next(next(temp)) != nil) {
             temp = next(temp);
         }
@@ -170,21 +170,21 @@ void Del_Akhirdll(addressdll *p, infotype *X) {
     }
 }
 
-boolean DeleteValuedll(addressdll *p, infotype target, infotype *X) {
+boolean DeleteValue(address *p, infotype target, infotype *X) {
     if (*p == nil) {
         return false;
     }
 
     if (strcmp(info(*p), target) == 0) {
         *X = info(*p);
-        addressdll temp = *p;
+        address temp = *p;
         *p = next(temp);
         next(temp) = nil; // Disconnect from list
         return true;
     }
 
-    addressdll prev = *p;
-    addressdll temp = next(prev);
+    address prev = *p;
+    address temp = next(prev);
 
     while (temp != nil && strcmp(info(temp), target) != 0) {
         prev = temp;
@@ -201,8 +201,8 @@ boolean DeleteValuedll(addressdll *p, infotype target, infotype *X) {
     return false; // Not found
 }
 
-void DeAlokasidll(addressdll *p) {
-    addressdll temp;
+void DeAlokasi(address *p) {
+    address temp;
     while (*p != nil) {
         temp = *p;
         *p = next(temp);
@@ -213,18 +213,18 @@ void DeAlokasidll(addressdll *p) {
     }
 }
 
-int NbElmtdll(addressdll p) {
+int NbElmt(address p) {
     if (p == nil) return 0;
-    return 1 + NbElmtdll(next(p));
+    return 1 + NbElmt(next(p));
 }
 
-void ModifyStringdll(infotype *str) {
+void ModifyString(infotype *str) {
     printf("Current string: %s\n", *str);
     free(*str);  // Free old string
-    *str = InsertTitledll();  // Allocate and assign new string
+    *str = InsertTitle();  // Allocate and assign new string
 }
 
-int initleveldll(){
+int initlevel(){
     printf("Masukkan level prioritas (1=Dosen, 2=Mahasiswa, 3=Umum): ");
     int level;
     scanf("%d", &level);

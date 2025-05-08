@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "linked.h"
-#include "stack.h"
-#include "queue.h"
-#include "driver.h"
+#include "linkedsll.h"
+#include "stacksll.h"
+#include "queuesll.h"
 
-void showMenu() {
+void showMenusll() {
     printf("\n===== SISTEM PERPUSTAKAAN =====\n");
     printf("1. Tambah Buku\n");
     printf("2. Tampilkan Semua Buku\n");
@@ -21,30 +20,12 @@ void showMenu() {
 }
 
 int mainsll() {
-    addrBuku headbuku = NULL;
-    address allanggota = NULL;
-    initPairList();
-
-    printf("Apakah anda ingin otomatis mengisi test case? (y/n)\nMasukkan jawaban anda: ");
-    char otomatis;
-    scanf("%c", &otomatis);
-    getchar();
-    
-    if (otomatis == 'y') {
-        otomatissll(&headbuku, &allanggota);
-        printf("Apakah anda ingin mereset ulang semua buku? (y/n)\nMasukkan jawaban anda: ");
-        char reset;
-        scanf("%c", &reset);
-        getchar();
-        if (reset == 'y') {
-            freeBuku(&headbuku);
-            headbuku = NULL;
-        }
-    }
-
+    addrBukusll headbuku = NULL;
+    addresssll allanggota = NULL;
+    initPairListsll();
     int input1;
     while (1) {
-        showMenu();
+        showMenusll();
         if (scanf("%d", &input1) != 1) {
             while (getchar() != '\n');
             printf("Input tidak valid. Masukkan angka 0-8.\n");
@@ -54,41 +35,41 @@ int mainsll() {
         
         switch (input1) {
             case 1: {
-                char* judul = InsertTitle();
+                char* judul = InsertTitlesll();
                 if (judul == NULL) break;
-                int stock = initStock();
-                addBuku(&headbuku, judul, stock);
+                int stock = initStocksll();
+                addBukusll(&headbuku, judul, stock);
                 break;
             }
             case 2: {
-                displayBuku(headbuku);
+                displayBukusll(headbuku);
                 break;
             }
             case 3: {
-                char* judul = InsertTitle();
+                char* judul = InsertTitlesll();
                 if (judul == NULL) break;
-                PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByTitle(judul, headbuku);
+                PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByTitlesll(judul, headbuku);
                 if (pair == NULL) {
                     printf("Buku tidak ditemukan!\n");
                     free(judul);
                     break;
                 }
                 free(judul);
-                char* nama = insertNama();
+                char* nama = insertNamasll();
                 if (nama == NULL) break;
-                address nodePeminjam = Search(allanggota, nama);
+                addresssll nodePeminjam = Searchsll(allanggota, nama);
                 if (nodePeminjam == NULL) {
                     printf("Anggota baru, ");
-                    int level = initlevel();
+                    int level = initlevelsll();
                     char* namaCopy = strdup(nama);
                     if (namaCopy == NULL) {
                         printf("Memory allocation failed\n");
                         free(nama);
                         break;
                     }
-                    nodePeminjam = SetNode(&namaCopy, level);
+                    nodePeminjam = SetNodesll(&namaCopy, level);
                     if (nodePeminjam) {
-                        Ins_Awal(&allanggota, nodePeminjam);
+                        Ins_Awalsll(&allanggota, nodePeminjam);
                         printf("Anggota baru ditambahkan.\n");
                     } else {
                         free(namaCopy);
@@ -103,10 +84,10 @@ int mainsll() {
                         free(nama);
                         break;
                     }
-                    address queueNode = SetNode(&queueInfo, nodePeminjam->priority);
+                    addresssll queueNode = SetNodesll(&queueInfo, nodePeminjam->priority);
                     if (queueNode) {
-                        enqueue(&pair->Q, queueNode, pair->buku);
-                        addHistory(nodePeminjam, pair->bookTitle, 'c', 's', pair->buku);
+                        enqueuesll(&pair->Q, queueNode, pair->buku);
+                        addHistorysll(nodePeminjam, pair->bookTitle, 'c', 's', pair->buku);
                         printf("Pemesanan berhasil ditambahkan!\n");
                     } else {
                         free(queueInfo);
@@ -116,52 +97,52 @@ int mainsll() {
                 break;
             }
             case 4: {
-                char* judul = InsertTitle();
+                char* judul = InsertTitlesll();
                 if (judul == NULL) break;
-                PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByTitle(judul, headbuku);
+                PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByTitlesll(judul, headbuku);
                 if (pair == NULL) {
                     printf("Buku tidak ditemukan!\n");
                     free(judul);
                     break;
                 }
                 free(judul);
-                prosesbuku(pair->buku, &allanggota);
+                prosesbukusll(pair->buku, &allanggota);
                 break;
             }
             case 5: {
-                char* judul = InsertTitle();
+                char* judul = InsertTitlesll();
                 if (judul == NULL) break;
-                PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByTitle(judul, headbuku);
+                PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByTitlesll(judul, headbuku);
                 if (pair == NULL) {
                     printf("Buku tidak ditemukan!\n");
                     free(judul);
                     break;
                 }
                 free(judul);
-                char* nama = insertNama();
+                char* nama = insertNamasll();
                 if (nama == NULL) break;
-                returnBuku(pair->buku, nama, &allanggota);
+                returnBukusll(pair->buku, nama, &allanggota);
                 free(nama);
                 break;
             }
             case 6: {
-                displayBukuanggota(headbuku);
+                displayBukuanggotasll(headbuku);
                 break;
             }
             case 7: {
-                infotype judul = InsertTitle();
-                addrBuku buku = findBuku(headbuku, judul);
+                infotypesll judul = InsertTitlesll();
+                addrBukusll buku = findBukusll(headbuku, judul);
                 if (buku == NULL) {
                     printf("Buku tidak ditemukan\n");
                 } else {
                     printf("Buku ditemukan!\n");
                     printf("Judul: %s\n", buku->info);
                     printf("Stock: %d\n", buku->priority);
-                    PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByAddr(buku);
-                    int queueLength = pair ? NbElmt(pair->Q.head, pair->buku) : 0;
+                    PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByAddrsll(buku);
+                    int queueLength = pair ? NbElmtsll(pair->Q.head, pair->buku) : 0;
                     printf("Antrian peminjam:\n");
                     if (pair && pair->Q.head != NULL && queueLength > 0) {
-                        address current = pair->Q.head;
+                        addresssll current = pair->Q.head;
                         int pos = 1;
                         while (current != NULL && current != pair->buku) {
                             printf("%d. %s (Prioritas: %d)\n", pos++, current->info, current->priority);
@@ -175,32 +156,28 @@ int mainsll() {
                 break;
             }
             case 8: {
-                char* nama = insertNama();
+                char* nama = insertNamasll();
                 if (nama == NULL) break;
-                address anggota = Search(allanggota, nama);
+                addresssll anggota = Searchsll(allanggota, nama);
                 if (anggota == NULL) {
                     printf("Anggota tidak ditemukan!\n");
                     free(nama);
                     break;
                 }
-                displayHistory(anggota);
+                displayHistorysll(anggota);
                 free(nama);
                 break;
             }
             case 0: {
                 printf("Terima kasih telah menggunakan sistem perpustakaan.\n");
-                freeBuku(&headbuku);
-                DeAlokasi(&allanggota);
-                clearAllPairs();
+                freeBukusll(&headbuku);
+                DeAlokasisll(&allanggota);
+                clearAllPairssll();
+                printf("\nAnda telah selesai menggunakan perpustakaan bertipe single linked list\n sekarang kembali ke menu");
                 return 0;
             }
             default:
                 printf("Pilihan tidak valid!\n");
         }
     }
-}
-
-int main(){
-    mainsll();
-    return 0;
 }

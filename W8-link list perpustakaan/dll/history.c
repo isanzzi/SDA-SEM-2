@@ -1,8 +1,8 @@
-#include "historydll.h"
-#include "linkeddll.h"
+#include "history.h"
+#include "linked.h"
 
-addresshistorydll createHistoryNodedll(infotype bookTitle, char action, char status, addrBukudll bookref, addressdll memberref) {
-    addresshistorydll newNode = (addresshistorydll)malloc(sizeof(Historydll));
+addresshistory createHistoryNode(infotype bookTitle, char action, char status, addrBuku bookref, address memberref) {
+    addresshistory newNode = (addresshistory)malloc(sizeof(History));
     if (newNode == NULL) {
         printf("Memory allocation failed\n");
         return NULL;
@@ -18,10 +18,10 @@ addresshistorydll createHistoryNodedll(infotype bookTitle, char action, char sta
     return newNode;
 }
 
-void addHistorydll(addressdll member, infotype bookTitle, char action, char status, addrBukudll bookref) {
+void addHistory(address member, infotype bookTitle, char action, char status, addrBuku bookref) {
     if (member == NULL) return;
     
-    addresshistorydll newHistory = createHistoryNodedll(bookTitle, action, status, bookref, member);
+    addresshistory newHistory = createHistoryNode(bookTitle, action, status, bookref, member);
     if (newHistory == NULL) return;
     
     // Add to stack (insert at beginning)
@@ -29,7 +29,7 @@ void addHistorydll(addressdll member, infotype bookTitle, char action, char stat
     member->history.top = newHistory;
 }
 
-void displayHistorydll(addressdll member) {
+void displayHistory(address member) {
     if (member == NULL) {
         printf("Member not found\n");
         return;
@@ -44,7 +44,7 @@ void displayHistorydll(addressdll member) {
     printf("%-20s %-10s %-10s\n", "Book", "Action", "Status");
     printf("----------------------------------------\n");
     
-    addresshistorydll current = member->history.top;
+    addresshistory current = member->history.top;
     while (current != NULL) {
         char actionStr[20];
         switch (current->action) {
@@ -69,8 +69,8 @@ void displayHistorydll(addressdll member) {
     }
 }
 
-void freeHistorydll(Stackhistorydll *history) {
-    addresshistorydll current, temp;
+void freeHistory(Stackhistory *history) {
+    addresshistory current, temp;
     
     current = history->top;
     

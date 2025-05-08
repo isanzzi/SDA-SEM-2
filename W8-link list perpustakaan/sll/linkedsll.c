@@ -1,17 +1,17 @@
-#include "linked.h"
+#include "linkedsll.h"
 
-extern PairBukuAnggota* pairListHead;
+extern PairBukuAnggotasll* pairListHeadsll;
 
-boolean isEmpty(address p) {
+booleansll isEmptysll(addresssll p) {
     return p == NULL;
 }
 
-void CreateEmpty(address *q) {
+void CreateEmptysll(addresssll *q) {
     *q = NULL;
 }
 
-address SetNode(infotype *nama, int prior) {
-    address P = (address)malloc(sizeof(Anggota));
+addresssll SetNodesll(infotypesll *nama, int prior) {
+    addresssll P = (addresssll)malloc(sizeof(Anggotasll));
     if (P == NULL) {
         printf("Memory allocation failed\n");
         return NULL;
@@ -19,12 +19,12 @@ address SetNode(infotype *nama, int prior) {
     P->info = *nama;
     P->next = NULL;
     P->priority = prior;
-    createinitStack(&P->history);
+    createinitStacksll(&P->history);
     printf("Created node: %s, priority=%d\n", P->info, P->priority);
     return P;
 }
 
-char* InsertTitle() {
+char* InsertTitlesll() {
     char *P = (char*)malloc(50 * sizeof(char));
     if (P == NULL) {
         printf("Allocation title failed\n");
@@ -35,7 +35,7 @@ char* InsertTitle() {
     return P;
 }
 
-char* insertNama() {
+char* insertNamasll() {
     char *P = (char*)malloc(50 * sizeof(char));
     if (P == NULL) {
         printf("Allocation name failed\n");
@@ -46,7 +46,7 @@ char* insertNama() {
     return P;
 }
 
-int initlevel() {
+int initlevelsll() {
     printf("Masukkan level prioritas (1=Dosen, 2=Mahasiswa, 3=Umum): ");
     int level;
     scanf("%d", &level);
@@ -59,7 +59,7 @@ int initlevel() {
     return level;
 }
 
-int initStock() {
+int initStocksll() {
     printf("Masukkan stock buku: ");
     int stock;
     scanf("%d", &stock);
@@ -72,19 +72,19 @@ int initStock() {
     return stock;
 }
 
-void Tampil_List(address p) {
-    if (isEmpty(p)) {
+void Tampil_Listsll(addresssll p) {
+    if (isEmptysll(p)) {
         printf("Empty List\n");
         return;
     }
-    address temp = p;
+    addresssll temp = p;
     while (temp != NULL) {
         printf("%s (Level: %d)\n", temp->info, temp->priority);
         temp = temp->next;
     }
 }
 
-address Search(address p, infotype nilai) {
+addresssll Searchsll(addresssll p, infotypesll nilai) {
     while (p != NULL) {
         if (nilai != NULL && p->info != NULL && strcmp(p->info, nilai) == 0) {
             return p;
@@ -94,24 +94,24 @@ address Search(address p, infotype nilai) {
     return NULL;
 }
 
-void Ins_Awal(address *p, address PNew) {
+void Ins_Awalsll(addresssll *p, addresssll PNew) {
     if (PNew == NULL) return;
     PNew->next = *p;
     *p = PNew;
 }
 
-void modifiedIns_Akhir(address *p, address PNew) {
+void modifiedIns_Akhirsll(addresssll *p, addresssll PNew) {
     if (p == NULL || PNew == NULL) {
         printf("Error: Invalid pointers\n");
         return;
     }
-    if (isEmpty(*p)) {
+    if (isEmptysll(*p)) {
         *p = PNew;
         PNew->next = NULL;
         return;
     }
-    address current = *p;
-    address prev = NULL;
+    addresssll current = *p;
+    addresssll prev = NULL;
     while (current != NULL && current->priority <= PNew->priority) {
         prev = current;
         current = current->next;
@@ -125,18 +125,18 @@ void modifiedIns_Akhir(address *p, address PNew) {
     }
 }
 
-boolean DeleteValue(address *p, infotype target, infotype *X) {
+booleansll DeleteValuesll(addresssll *p, infotypesll target, infotypesll *X) {
     if (p == NULL || *p == NULL) return false;
     if (strcmp((*p)->info, target) == 0) {
         *X = (*p)->info;
-        address temp = *p;
+        addresssll temp = *p;
         *p = temp->next;
         temp->next = NULL;
         free(temp);
         return true;
     }
-    address prev = *p;
-    address temp = prev->next;
+    addresssll prev = *p;
+    addresssll temp = prev->next;
     while (temp != NULL && strcmp(temp->info, target) != 0) {
         prev = temp;
         temp = temp->next;
@@ -151,25 +151,27 @@ boolean DeleteValue(address *p, infotype target, infotype *X) {
     return false;
 }
 
-void DeAlokasi(address *p) {
-    address temp;
+void DeAlokasisll(addresssll *p) {
+    addresssll temp;
     while (*p != NULL) {
         temp = *p;
         *p = temp->next;
-        if (temp->info != NULL) free(temp->info);
-        ExitStack(&temp->history);
+        if (temp->info != NULL) {
+            free(temp->info);
+        }
+        ExitStacksll(&temp->history);
         free(temp);
     }
 }
 
-int NbElmt(address head, address tail) {
+int NbElmtsll(addresssll head, addresssll tail) {
     if (head == NULL || tail == NULL) return 0;
     int count = 1; // Start with tail
-    address current = tail;
+    addresssll current = tail;
     while (current != head && current != NULL) {
         count++;
         // Find previous node
-        address temp = head;
+        addresssll temp = head;
         while (temp != NULL && temp->next != current) {
             temp = temp->next;
         }
@@ -178,12 +180,12 @@ int NbElmt(address head, address tail) {
     return count;
 }
 
-void initBuku(addrBuku *B) {
+void initBukusll(addrBukusll *B) {
     *B = NULL;
 }
 
-addrBuku createBuku(char *judul, int jumlah) {
-    addrBuku newBuku = (addrBuku)malloc(sizeof(Buku));
+addrBukusll createBukusll(char *judul, int jumlah) {
+    addrBukusll newBuku = (addrBukusll)malloc(sizeof(Bukusll));
     if (newBuku == NULL) return NULL;
     newBuku->info = strdup(judul);
     if (newBuku->info == NULL) {
@@ -192,25 +194,25 @@ addrBuku createBuku(char *judul, int jumlah) {
     }
     newBuku->priority = jumlah;
     newBuku->next = NULL;
-    createinitStack(&newBuku->history);
+    createinitStacksll(&newBuku->history);
     printf("Created book: %s, stock=%d\n", newBuku->info, newBuku->priority);
     return newBuku;
 }
 
-void addBuku(addrBuku *head, char *judul, int jumlah) {
+void addBukusll(addrBukusll *head, char *judul, int jumlah) {
     if (jumlah < 1) {
         printf("Stock tidak memenuhi persyaratan\n");
         free(judul);
         return;
     }
-    addrBuku existing = findBuku(*head, judul);
+    addrBukusll existing = findBukusll(*head, judul);
     if (existing != NULL) {
         existing->priority += jumlah;
         printf("Buku %s sudah ada, stock ditambah menjadi %d\n", judul, existing->priority);
         free(judul);
         return;
     }
-    addrBuku newBuku = createBuku(judul, jumlah);
+    addrBukusll newBuku = createBukusll(judul, jumlah);
     if (newBuku == NULL) {
         free(judul);
         return;
@@ -222,7 +224,7 @@ void addBuku(addrBuku *head, char *judul, int jumlah) {
         free(judul);
         return;
     }
-    PairBukuAnggota* pair = createPairBukuAnggota(newBuku, titleCopy);
+    PairBukuAnggotasll* pair = createPairBukuAnggotasll(newBuku, titleCopy);
     if (pair == NULL) {
         free(newBuku->info);
         free(newBuku);
@@ -230,12 +232,12 @@ void addBuku(addrBuku *head, char *judul, int jumlah) {
         free(judul);
         return;
     }
-    pair->next = pairListHead;
-    pairListHead = pair;
+    pair->next = pairListHeadsll;
+    pairListHeadsll = pair;
     if (*head == NULL) {
         *head = newBuku;
     } else {
-        addrBuku temp = *head;
+        addrBukusll temp = *head;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -244,8 +246,8 @@ void addBuku(addrBuku *head, char *judul, int jumlah) {
     free(judul);
 }
 
-addrBuku findBuku(addrBuku head, char* judul) {
-    addrBuku temp = head;
+addrBukusll findBukusll(addrBukusll head, char* judul) {
+    addrBukusll temp = head;
     while (temp != NULL) {
         if (temp->info != NULL && strcmp(temp->info, judul) == 0) {
             return temp;
@@ -255,34 +257,34 @@ addrBuku findBuku(addrBuku head, char* judul) {
     return NULL;
 }
 
-void displayBuku(addrBuku head) {
+void displayBukusll(addrBukusll head) {
     if (head == NULL) {
         printf("Tidak ada buku\n");
         return;
     }
-    addrBuku temp = head;
+    addrBukusll temp = head;
     while (temp != NULL) {
-        PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByAddr(temp);
-        int queueLength = pair ? NbElmt(pair->Q.head, pair->Q.tail) : 0;
+        PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByAddrsll(temp);
+        int queueLength = pair ? NbElmtsll(pair->Q.head, pair->Q.tail) : 0;
         printf("Buku: %s (Tersedia: %d, Antrian: %d)\n", 
                temp->info, temp->priority, queueLength);
         temp = temp->next;
     }
 }
 
-void displayBukuanggota(addrBuku head) {
+void displayBukuanggotasll(addrBukusll head) {
     if (head == NULL) {
         printf("Tidak ada buku\n");
         return;
     }
-    addrBuku temp = head;
+    addrBukusll temp = head;
     while (temp != NULL) {
-        PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByAddr(temp);
-        int queueLength = pair ? NbElmt(pair->Q.head, pair->Q.tail) : 0;
+        PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByAddrsll(temp);
+        int queueLength = pair ? NbElmtsll(pair->Q.head, pair->Q.tail) : 0;
         printf("Buku: %s (Tersedia: %d)\n", temp->info, temp->priority);
         if (pair && pair->Q.head != NULL && queueLength > 0) {
             printf("  Antrian Peminjam:\n");
-            address current = pair->Q.head;
+            addresssll current = pair->Q.head;
             int pos = 1;
             while (current != NULL && current->next != pair->buku) {
                 printf("  %d. %s (Prioritas: %d)\n", pos++, current->info, current->priority);
@@ -300,17 +302,17 @@ void displayBukuanggota(addrBuku head) {
     }
 }
 
-void prosesbuku(addrBuku head, address *allAnggota) {
+void prosesbukusll(addrBukusll head, addresssll *allAnggota) {
     if (head == NULL) {
         printf("Buku tidak ditemukan\n");
         return;
     }
-    PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByAddr(head);
+    PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByAddrsll(head);
     if (pair == NULL) {
         printf("Kesalahan saat mencari pasangan buku-anggota\n");
         return;
     }
-    if (isEmpty(pair->Q.head)) {
+    if (isEmptysll(pair->Q.head)) {
         printf("Tidak ada anggota dalam antrian\n");
         return;
     }
@@ -318,72 +320,90 @@ void prosesbuku(addrBuku head, address *allAnggota) {
         printf("Stok buku habis\n");
         return;
     }
-    infotype peminjamNama = NULL;
-    dequeue(&pair->Q, &peminjamNama);
+    infotypesll peminjamNama = NULL;
+    dequeuesll(&pair->Q, &peminjamNama);
     if (peminjamNama == NULL) {
         printf("Gagal memproses antrian\n");
         return;
     }
     head->priority--;
-    address peminjam = Search(*allAnggota, peminjamNama);
+    addresssll peminjam = Searchsll(*allAnggota, peminjamNama);
     if (peminjam == NULL) {
         printf("Anggota tidak ditemukan, ditambahkan sebagai anggota baru\n");
-        infotype namaCopy = strdup(peminjamNama);
-        address newNode = SetNode(&namaCopy, 3);
+        infotypesll namaCopy = strdup(peminjamNama);
+        addresssll newNode = SetNodesll(&namaCopy, 3);
         if (newNode) {
-            Ins_Awal(allAnggota, newNode);
+            Ins_Awalsll(allAnggota, newNode);
             peminjam = newNode;
         } else {
             free(peminjamNama);
             return;
         }
     }
-    addHistory(peminjam, head->info, 'b', 's', head);
+    addHistorysll(peminjam, head->info, 'b', 's', head);
     printf("Buku \"%s\" berhasil dipinjam oleh %s\n", head->info, peminjamNama);
     printf("Sisa stok buku: %d\n", head->priority);
     free(peminjamNama);
 }
 
-void returnBuku(addrBuku head, infotype peminjam, address *allAnggota) {
-    if (head == NULL) {
-        printf("Buku tidak ditemukan\n");
+void returnBukusll(addrBukusll head, infotypesll peminjam, addresssll *allAnggota) {
+    if (head == NULL || peminjam == NULL) {
+        printf("Buku atau nama peminjam tidak valid\n");
         return;
     }
+
     head->priority++;
     printf("Buku \"%s\" telah dikembalikan oleh: %s\n", head->info, peminjam);
     printf("Stock buku \"%s\" sekarang: %d\n", head->info, head->priority);
-    address found = Search(*allAnggota, peminjam);
+
+    // cari member, kalau gaada buat baru
+    addresssll found = Searchsll(*allAnggota, peminjam);
     if (found == NULL) {
-        infotype peminjamCopy = strdup(peminjam);
-        address newNode = SetNode(&peminjamCopy, 3);
-        if (newNode) {
-            Ins_Awal(allAnggota, newNode);
-            found = newNode;
+        infotypesll peminjamCopy = strdup(peminjam);
+        if (peminjamCopy == NULL) {
+            printf("Memory allocation failed\n");
+            return;
         }
+        found = SetNodesll(&peminjamCopy, 3);
+        if (found == NULL) {
+            free(peminjamCopy);
+            printf("Failed to create new member node\n");
+            return;
+        }
+        Ins_Awalsll(allAnggota, found);
     }
-    if (found) {
-        addHistory(found, head->info, 'r', 's', head);
+
+    addHistorysll(found, head->info, 'r', 's', head);
+
+    PairBukuAnggotasll* pair = findOrCreatePairBukuAnggotaByAddrsll(head);
+    if (pair == NULL) {
+        printf("Failed to find or create book-member pair\n");
+        return;
     }
-    PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByAddr(head);
-    if (pair && !isEmpty(pair->Q.head) && head->priority > 0) {
+
+    if (!isEmptysll(pair->Q.head) && head->priority > 0) {
         printf("Peminjam berikutnya: %s (Prioritas: %d)\n", 
                pair->Q.head->info, pair->Q.head->priority);
     }
 }
 
-void freeBuku(addrBuku *head) {
-    addrBuku temp;
+void freeBukusll(addrBukusll *head) {
+    addrBukusll temp;
     while (*head != NULL) {
         temp = *head;
         *head = temp->next;
-        PairBukuAnggota* pair = findOrCreatePairBukuAnggotaByAddr(temp);
-        if (pair) {
-            ExitQueue(&pair->Q);
-            free(pair->bookTitle);
+        // PairBukuAnggotasll* pair = findPairBukuAnggotaByAddrsll(temp);
+        // if (pair) {
+        //     ExitQueuesll(&pair->Q);
+        // }
+        if (temp != NULL) {
+            ExitStacksll(&temp->history);
+            if (temp->info != NULL) {
+                free(temp->info);
+                temp->info = NULL;
+            }
+            free(temp);
         }
-        ExitStack(&temp->history);
-        free(temp->info);
-        free(temp);
     }
-    clearAllPairs();
+    clearAllPairssll();
 }

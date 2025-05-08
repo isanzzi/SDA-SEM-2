@@ -1,13 +1,18 @@
-#include "history.h"
-#include "linked.h"
+#include "historysll.h"
+#include "linkedsll.h"
 
-addresshistory createHistoryNode(infotype bookTitle, char action, char status, addrBuku bookref, address memberref) {
-    addresshistory newNode = (addresshistory)malloc(sizeof(History));
+addresshistorysll createHistoryNodesll(infotypesll bookTitle, char action, char status, addrBukusll bookref, addresssll memberref) {
+    addresshistorysll newNode = (addresshistorysll)malloc(sizeof(Historysll));
     if (newNode == NULL) {
         printf("Memory allocation failed\n");
         return NULL;
     }
     newNode->info = strdup(bookTitle);
+    if (newNode->info == NULL) {
+        free(newNode);
+        printf("Memory allocation failed for book title\n");
+        return NULL;
+    }
     newNode->action = action;
     newNode->status = status;
     newNode->bookref = bookref;
@@ -16,15 +21,15 @@ addresshistory createHistoryNode(infotype bookTitle, char action, char status, a
     return newNode;
 }
 
-void addHistory(address member, infotype bookTitle, char action, char status, addrBuku bookref) {
+void addHistorysll(addresssll member, infotypesll bookTitle, char action, char status, addrBukusll bookref) {
     if (member == NULL) return;
-    addresshistory newHistory = createHistoryNode(bookTitle, action, status, bookref, member);
+    addresshistorysll newHistory = createHistoryNodesll(bookTitle, action, status, bookref, member);
     if (newHistory == NULL) return;
     newHistory->next = member->history.top;
     member->history.top = newHistory;
 }
 
-void displayHistory(address member) {
+void displayHistorysll(addresssll member) {
     if (member == NULL) {
         printf("Member not found\n");
         return;
@@ -36,7 +41,7 @@ void displayHistory(address member) {
     }
     printf("%-20s %-10s %-10s\n", "Book", "Action", "Status");
     printf("----------------------------------------\n");
-    addresshistory current = member->history.top;
+    addresshistorysll current = member->history.top;
     while (current != NULL) {
         char actionStr[20];
         switch (current->action) {

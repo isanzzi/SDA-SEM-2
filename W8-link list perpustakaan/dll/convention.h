@@ -17,11 +17,10 @@ struct tElmtList;
 struct bukuNode;
 struct riwayat;
 
-typedef struct tElmtList *addressdll;
-typedef struct bukuNode *addrBukudll;
-typedef struct riwayat *addresshistorydll;
+typedef struct tElmtList *address;
+typedef struct bukuNode *addrBuku;
+typedef struct riwayat *addresshistory;
 
-// Common macros
 #define info(P) (P)->info
 #define next(P) (P)->next
 #define level(P) (P)->level

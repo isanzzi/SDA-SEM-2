@@ -326,7 +326,7 @@ void mainarray() {
             }
 
             case 10:{
-                printf("\nTerima kasih telah menggunakan sistem perpustakaan!\n");
+                printf("\nAnda telah selesai menggunakan perpustakaan bertipe gabungan array dengan linked list\n sekarang kembali ke menu");
                 lanjut = false;
                 break;
             }

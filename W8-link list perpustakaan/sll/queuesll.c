@@ -1,7 +1,7 @@
-#include "queue.h"
-#include "linked.h"
+#include "queuesll.h"
+#include "linkedsll.h"
 
-void enqueue(Queue *Q, address node, addrBuku book) {
+void enqueuesll(Queuesll *Q, addresssll node, addrBukusll book) {
     if (Q == NULL || node == NULL || book == NULL) {
         printf("Error: Invalid queue, node, or book\n");
         return;
@@ -12,14 +12,14 @@ void enqueue(Queue *Q, address node, addrBuku book) {
     }
     node->next = NULL;
     printf("Enqueue: Adding %s (priority %d) for book %s\n", node->info, node->priority, book->info);
-    if (isEmpty(Q->head)) {
+    if (isEmptysll(Q->head)) {
         Q->head = node;
         Q->tail = node;
         node->next = book;
         printf("Enqueued %s as head, tail=%s, points to book %s\n", node->info, Q->tail->info, book->info);
     } else {
-        address current = Q->head;
-        address prev = NULL;
+        addresssll current = Q->head;
+        addresssll prev = NULL;
         while (current != NULL && current != book && current->priority <= node->priority) {
             prev = current;
             current = current->next;
@@ -41,26 +41,30 @@ void enqueue(Queue *Q, address node, addrBuku book) {
     }
 }
 
-void dequeue(Queue *Q, infotype *nilai) {
-    if (Q == NULL || isEmpty(Q->head)) {
+void dequeuesll(Queuesll *Q, infotypesll *nilai) {
+    if (Q == NULL || isEmptysll(Q->head)) {
         printf("Dequeue failed: Empty queue\n");
         *nilai = NULL;
         return;
     }
-    address temp = Q->head;
+    addresssll temp = Q->head;
     *nilai = temp->info;
+    
     Q->head = temp->next;
-    if (Q->head == NULL || Q->head == Q->tail->next) {
+    
+    if (Q->head == NULL || temp == Q->tail) {
         Q->tail = NULL;
         printf("Dequeued %s, queue now empty\n", *nilai);
     } else {
         printf("Dequeued %s, new head %s\n", *nilai, Q->head->info);
     }
+    
     temp->next = NULL;
+    temp->info = NULL;
     free(temp);
 }
 
-void createinitQueue(Queue *Q) {
+void createinitQueuesll(Queuesll *Q) {
     if (Q == NULL) {
         printf("Error: NULL queue\n");
         return;
@@ -70,15 +74,38 @@ void createinitQueue(Queue *Q) {
     printf("Initialized queue: head=%p, tail=%p\n", (void*)Q->head, (void*)Q->tail);
 }
 
-void ExitQueue(Queue *Q) {
+void ExitQueuesll(Queuesll *Q) {
     if (Q == NULL) return;
-    address temp;
-    while (Q->head != NULL && Q->head != Q->tail->next) {
-        temp = Q->head;
-        Q->head = temp->next;
-        if (temp->info != NULL) free(temp->info);
-        free(temp);
+    addresssll temp;
+    
+    if (Q->tail == NULL) {
+        while (Q->head != NULL) {
+            temp = Q->head;
+            Q->head = temp->next;
+            
+            if (temp->info != NULL) {
+                free(temp->info);
+                temp->info = NULL;
+            }
+            
+            free(temp);
+        }
+    } 
+    else {
+        while (Q->head != NULL && Q->head != Q->tail->next) {
+            temp = Q->head;
+            Q->head = temp->next;
+            
+            if (temp->info != NULL) {
+                free(temp->info);
+                temp->info = NULL;
+            }
+            
+            free(temp);
+        }
     }
+    
+    Q->head = NULL;
     Q->tail = NULL;
     printf("Queue cleared\n");
 }

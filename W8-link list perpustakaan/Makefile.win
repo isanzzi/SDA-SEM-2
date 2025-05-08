@@ -1,0 +1,85 @@
+# Project: linked perpus
+# Makefile created by Dev-C++ 5.9.2
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = main.o array/bukuarray.o array/historyarray.o array/linkedarray.o array/mainarray.o array/queuearray.o array/stackarray.o sll/historysll.o sll/linkedsll.o sll/mainsll.o sll/pairbukusll.o sll/queuesll.o sll/stacksll.o dll/buku.o dll/driver.o dll/history.o dll/linked.o dll/queue.o dll/stack.o dll/maindll.o
+LINKOBJ  = main.o array/bukuarray.o array/historyarray.o array/linkedarray.o array/mainarray.o array/queuearray.o array/stackarray.o sll/historysll.o sll/linkedsll.o sll/mainsll.o sll/pairbukusll.o sll/queuesll.o sll/stacksll.o dll/buku.o dll/driver.o dll/history.o dll/linked.o dll/queue.o dll/stack.o dll/maindll.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
+BIN      = "linked perpus.exe"
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+array/bukuarray.o: array/bukuarray.c
+	$(CC) -c array/bukuarray.c -o array/bukuarray.o $(CFLAGS)
+
+array/historyarray.o: array/historyarray.c
+	$(CC) -c array/historyarray.c -o array/historyarray.o $(CFLAGS)
+
+array/linkedarray.o: array/linkedarray.c
+	$(CC) -c array/linkedarray.c -o array/linkedarray.o $(CFLAGS)
+
+array/mainarray.o: array/mainarray.c
+	$(CC) -c array/mainarray.c -o array/mainarray.o $(CFLAGS)
+
+array/queuearray.o: array/queuearray.c
+	$(CC) -c array/queuearray.c -o array/queuearray.o $(CFLAGS)
+
+array/stackarray.o: array/stackarray.c
+	$(CC) -c array/stackarray.c -o array/stackarray.o $(CFLAGS)
+
+sll/historysll.o: sll/historysll.c
+	$(CC) -c sll/historysll.c -o sll/historysll.o $(CFLAGS)
+
+sll/linkedsll.o: sll/linkedsll.c
+	$(CC) -c sll/linkedsll.c -o sll/linkedsll.o $(CFLAGS)
+
+sll/mainsll.o: sll/mainsll.c
+	$(CC) -c sll/mainsll.c -o sll/mainsll.o $(CFLAGS)
+
+sll/pairbukusll.o: sll/pairbukusll.c
+	$(CC) -c sll/pairbukusll.c -o sll/pairbukusll.o $(CFLAGS)
+
+sll/queuesll.o: sll/queuesll.c
+	$(CC) -c sll/queuesll.c -o sll/queuesll.o $(CFLAGS)
+
+sll/stacksll.o: sll/stacksll.c
+	$(CC) -c sll/stacksll.c -o sll/stacksll.o $(CFLAGS)
+
+dll/buku.o: dll/buku.c
+	$(CC) -c dll/buku.c -o dll/buku.o $(CFLAGS)
+
+dll/driver.o: dll/driver.c
+	$(CC) -c dll/driver.c -o dll/driver.o $(CFLAGS)
+
+dll/history.o: dll/history.c
+	$(CC) -c dll/history.c -o dll/history.o $(CFLAGS)
+
+dll/linked.o: dll/linked.c
+	$(CC) -c dll/linked.c -o dll/linked.o $(CFLAGS)
+
+dll/queue.o: dll/queue.c
+	$(CC) -c dll/queue.c -o dll/queue.o $(CFLAGS)
+
+dll/stack.o: dll/stack.c
+	$(CC) -c dll/stack.c -o dll/stack.o $(CFLAGS)
+
+dll/maindll.o: dll/maindll.c
+	$(CC) -c dll/maindll.c -o dll/maindll.o $(CFLAGS)

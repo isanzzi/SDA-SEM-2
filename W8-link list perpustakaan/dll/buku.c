@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bukudll.h"
+#include "buku.h"
 
-void initBukudll(addrBukudll *B) {
+void initBuku(addrBuku *B) {
     *B = NULL;
 }
 
-addrBukudll createBukudll(char *judul, int jumlah) {
-    addrBukudll newBuku = (addrBukudll)malloc(sizeof(Bukudll));
+addrBuku createBuku(char *judul, int jumlah) {
+    addrBuku newBuku = (addrBuku)malloc(sizeof(Buku));
     if (newBuku == NULL) {
         return NULL;
     }
@@ -21,19 +21,19 @@ addrBukudll createBukudll(char *judul, int jumlah) {
     
     strcpy(newBuku->info, judul);
     newBuku->stock = jumlah;
-    createinitQueuedll(&(newBuku->Q));
+    createinitQueue(&(newBuku->Q));
     newBuku->next = NULL;
     
     return newBuku;
 }
 
-void addBukudll(addrBukudll *head, char *judul, int jumlah) {
+void addBuku(addrBuku *head, char *judul, int jumlah) {
     if (jumlah <1){
         printf ("stock tidak memenuhi persyaratan, buku tidak dibuat");
         return;
     }
     
-    addrBukudll newBuku = createBukudll(judul, jumlah);
+    addrBuku newBuku = createBuku(judul, jumlah);
     
     if (newBuku == NULL) {
         return;
@@ -42,7 +42,7 @@ void addBukudll(addrBukudll *head, char *judul, int jumlah) {
     if (*head == NULL) {
         *head = newBuku;
     } else {
-        addrBukudll temp = *head;
+        addrBuku temp = *head;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -50,8 +50,8 @@ void addBukudll(addrBukudll *head, char *judul, int jumlah) {
     }
 }
 
-addrBukudll findBukudll(addrBukudll head, char *judul) {
-    addrBukudll temp = head;
+addrBuku findBuku(addrBuku head, char *judul) {
+    addrBuku temp = head;
     while (temp != NULL) {
         if (strcmp(temp->info, judul) == 0) {
             return temp;
@@ -61,16 +61,16 @@ addrBukudll findBukudll(addrBukudll head, char *judul) {
     return NULL;
 }
 
-void displayBukudll(addrBukudll head) {
+void displayBuku(addrBuku head) {
     if (head == NULL) {
         printf("Tidak ada buku\n");
         return;
     }
     
-    addrBukudll temp = head;
+    addrBuku temp = head;
     while (temp != NULL) {
         int queueLength = 0;
-        addressdll waitlistHead = temp->Q.head;
+        address waitlistHead = temp->Q.head;
         while (waitlistHead != NULL) {
             queueLength++;
             waitlistHead = waitlistHead->next;
@@ -82,16 +82,16 @@ void displayBukudll(addrBukudll head) {
     }
 }
 
-void displayBukuanggotadll(addrBukudll head) {
+void displayBukuanggota(addrBuku head) {
     if (head == NULL) {
         printf("Tidak ada buku\n");
         return;
     }
     
-    addrBukudll temp = head;
+    addrBuku temp = head;
     while (temp != NULL) {
         int queueLength = 0;
-        addressdll waitlistHead = temp->Q.head;
+        address waitlistHead = temp->Q.head;
         
         printf("Buku: %s (Tersedia: %d)\n", temp->info, temp->stock);
         
@@ -112,58 +112,58 @@ void displayBukuanggotadll(addrBukudll head) {
     }
 }
 
-void prosesbukudll(addrBukudll head, addressdll *allAnggota) {
+void prosesbuku(addrBuku head, address *allAnggota) {
     if (head == NULL) {
         printf("Buku tidak ditemukan\n");
         return;
     }
     
-    if (isEmptydll(head->Q.head)) {
+    if (isEmpty(head->Q.head)) {
         printf("Tidak ada anggota dalam antrian peminjaman\n");
         return;
     }
     
     if (head->stock > 0) {
         infotype info;
-        addressdll peminjam = head->Q.head;
-        dequeuedll(&head->Q, &info);
+        address peminjam = head->Q.head;
+        dequeue(&head->Q, &info);
         printf("Buku \"%s\" berhasil dipinjam oleh: %s\n", head->info, info);
         head->stock--;
 
-        addressdll found = Searchdll(*allAnggota, info);
+        address found = Search(*allAnggota, info);
         if (found == NULL) {
-            addressdll newNode = SetNodedll(&info, peminjam->level);
-            Ins_Akhirdll(allAnggota, newNode);
+            address newNode = SetNode(&info, peminjam->level);
+            Ins_Akhir(allAnggota, newNode);
             found=newNode;
         }
 
-        addHistorydll(found, head->info, 'b', 's', head);
+        addHistory(found, head->info, 'b', 's', head);
     } else {
         printf("Stock buku \"%s\" sedang kosong\n", head->info);
 
-        if (!isEmptydll(head->Q.head)) {
-            addressdll peminjam = head->Q.head;
-            addressdll found = Searchdll(*allAnggota, peminjam->info);
+        if (!isEmpty(head->Q.head)) {
+            address peminjam = head->Q.head;
+            address found = Search(*allAnggota, peminjam->info);
             if (found != NULL) {
-                addHistorydll(found, head->info, 'b', 'f', head);
+                addHistory(found, head->info, 'b', 'f', head);
             }
         }
     }
 }
 
-void freeBukudll(addrBukudll *head) {
-    addrBukudll temp;
+void freeBuku(addrBuku *head) {
+    addrBuku temp;
     
     while (*head != NULL) {
         temp = *head;
         *head = (*head)->next;
         
-        DeAlokasidll(&(temp->Q.head));
+        DeAlokasi(&(temp->Q.head));
         free(temp);
     }
 }
 
-void returnBukudll(addrBukudll head, infotype peminjam, addressdll *allAnggota) {
+void returnBuku(addrBuku head, infotype peminjam, address *allAnggota) {
     if (head == NULL) {
         printf("Buku tidak ditemukan\n");
         return;
@@ -174,30 +174,19 @@ void returnBukudll(addrBukudll head, infotype peminjam, addressdll *allAnggota) 
     printf("Buku \"%s\" telah dikembalikan oleh: %s\n", head->info, peminjam);
     printf("Stock buku \"%s\" sekarang: %d\n", head->info, head->stock);
 
-    addressdll found = Searchdll(*allAnggota, peminjam);
+    address found = Search(*allAnggota, peminjam);
     if (found == NULL) {
         infotype peminjamCopy = strdup(peminjam);
-        addressdll newNode = SetNodedll(&peminjamCopy, 3);
-        Ins_Akhirdll(allAnggota, newNode);
+        address newNode = SetNode(&peminjamCopy, 3);
+        Ins_Akhir(allAnggota, newNode);
         found = newNode;
     }
 
-    addHistorydll(found, head->info, 'r', 's', head);
+    addHistory(found, head->info, 'r', 's', head);
     
     // Jika ada antrian dan stok sudah ada, berikan informasi tentang peminjam berikutnya
-    if (!isEmptydll(head->Q.head) && head->stock > 0) {
+    if (!isEmpty(head->Q.head) && head->stock > 0) {
         printf("Peminjam berikutnya untuk buku \"%s\" adalah: %s (Prioritas: %d)\n", 
                head->info, head->Q.head->info, head->Q.head->level);
     }
 }
-
-// addrBukudll findNextAvailableBukudll(addrBukudll head) {
-//     addrBukudll temp = head;
-//     while (temp != NULL) {
-//         if (temp->stock > 0 && !isEmptydll(temp->headQueue)) {
-//             return temp;
-//         }
-//         temp = temp->next;
-//     }
-//     return NULL;
-// }
