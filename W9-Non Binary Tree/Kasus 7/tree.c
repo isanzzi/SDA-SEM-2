@@ -26,11 +26,8 @@ void Create_tree(Isi_Tree X, int Jml_Node){
     }
 }
 
-bool IsEmpty (Isi_Tree P){
-    if (P[0].info== 0){
-        return true;
-    }
-    return false;
+bool IsEmpty(Isi_Tree P) {
+    return (P[1].info == 0);
 }
 
 void PreOrder (Isi_Tree P, address curr){ //current,fs,nb
@@ -92,80 +89,69 @@ void InOrderRec (Isi_Tree P, address curr){
     }
 }
 
-void Level_order(Isi_Tree X, address Maks_node) {
-    if (X[1].info == 0) {
+void Level_order(Isi_Tree X, int Maks_node) {
+    if (IsEmpty(X)) {
         return;
     }
-    
-    address queue[jml_maks+1];
+
+    address queue[jml_maks + 1];
+    bool visited[jml_maks + 1];
+    for (int i = 0; i <= jml_maks; i++) visited[i] = false;
     int front = 0;
     int rear = 0;
-    
-    // Start root
+
+    // Enqueue root
     queue[rear++] = 1;
-    
+    visited[1] = true;
+
     while (front < rear) {
-        // Dequeue
         address current = queue[front++];
-        
-        // Process current
         printf("%c ", X[current].info);
-        
-        // Enqueue first child if it exists
-        if (X[current].ps_fs != 0 && X[current].ps_fs <= Maks_node) {
-            queue[rear++] = X[current].ps_fs;
-        }
-        
-        // Enqueue siblings
-        address sibling = X[current].ps_nb;
-        while (sibling != 0 && sibling <= Maks_node) {
-            queue[rear++] = sibling;
-            sibling = X[sibling].ps_nb;
+
+        // Enqueue all children
+        if (X[current].ps_fs != 0) {
+            address child = X[current].ps_fs;
+            while (child != 0 && child <= Maks_node) {
+                if (!visited[child]) {
+                    queue[rear++] = child;
+                    visited[child] = true;
+                }
+                child = X[child].ps_nb;
+            }
         }
     }
 }
 
 
 //Generate Graphviz
-void PrintTree (Isi_Tree P, const char* filename){
+void PrintTree(Isi_Tree P, const char* filename) {
     FILE *fp = fopen(filename, "w");
-    if (fp == NULL){
-        printf ("error opening file\n");
+    if (fp == NULL) {
+        printf("error opening file\n");
         return;
     }
 
-    //write header DOT
-    fprintf (fp, "diagraph NonBinaryTree {\n");
-
-    //jika empty
-    if (IsEmpty (P)){
-        fprintf (fp, "  empty;\n");
-        fprintf (fp, "}\n");
-        fclose (fp);
-        return;
-    }
-
-    int i=1;
-    while (i<jml_maks){
-        if (P[i].info != 0){
-            //fs
-            if (P[i].ps_fs != 0){
-                fprintf (fp, "  %c -> %c;\n", P[i].info, P[P[i].ps_fs].info);
-            }
-            //nb
-            if (P[P[i].ps_fs].ps_nb != 0){
-                fprintf (fp, "  %c -> %c;\n", P[i].info, P[P[P[i].ps_fs].ps_nb].info);
+    fprintf(fp, "digraph NonBinaryTree {\n");
+    if (IsEmpty(P)) {
+        fprintf(fp, "  empty;\n");
+    } else {
+        for (int i = 1; i <= jml_maks; i++) {
+            if (P[i].info != 0) {
+                address child = P[i].ps_fs;
+                while (child != 0) {
+                    fprintf(fp, "  %c -> %c;\n", P[i].info, P[child].info);
+                    child = P[child].ps_nb;
+                }
             }
         }
-        i++;
     }
+    fprintf(fp, "}\n");
+    fclose(fp);
 
-    fprintf (fp, "}\n");
-    fclose (fp);
-    printf ("graph generated in %s\n", filename);
-    printf ("you can visit this link if you want to see output\n");
-    printf ("https://dreampuf.github.io/GraphvizOnline/\n");
-    printf ("or run this in cmd 'dot -Tpng tree.dot -o tree.png'\n");
+    printf("graph generated in %s\n", filename);
+    printf("you can visit this link if you want to see output\n");
+    printf("https://dreampuf.github.io/GraphvizOnline/\n");
+    printf("or run this in cmd 'dot -Tpng tree.dot -o tree.png'\n");
 }
 
 bool Search (Isi_Tree P, infotype X) {
@@ -213,16 +199,12 @@ int nbElmt (Isi_Tree P){
     // }
 }
 
-int nbDaun (Isi_Tree P){
-    if (IsEmpty(P)){
-        return 0;
-    }
-    int i=1, count=0;
-    while (i<jml_maks){
-        if (P[i].ps_fs==0){
+int nbDaun(Isi_Tree P) {
+    int count = 0;
+    for (int i = 1; i <= jml_maks; i++) {
+        if (P[i].info != 0 && P[i].ps_fs == 0) {
             count++;
         }
-        i++;
     }
     return count;
 
@@ -274,12 +256,18 @@ int DepthRec(Isi_Tree P, address curr) {
     if (curr == 0 || P[curr].info == 0) {
         return -1;
     }
-    
-    int depthFirstChild = DepthRec(P, P[curr].ps_fs) + 1;
-    
-    int depthNextSibling = DepthRec(P, P[curr].ps_nb);
-    
-    return (depthFirstChild > depthNextSibling) ? depthFirstChild : depthNextSibling;
+
+    int maxChildDepth = -1;
+    address child = P[curr].ps_fs;
+    while (child != 0) {
+        int childDepth = DepthRec(P, child);
+        if (childDepth > maxChildDepth) {
+            maxChildDepth = childDepth;
+        }
+        child = P[child].ps_nb;
+    }
+
+    return maxChildDepth + 1;
 }
 
 int Max(infotype Data1, infotype Data2){
