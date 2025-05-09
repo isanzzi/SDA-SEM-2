@@ -25,7 +25,9 @@ int main() {
             printf("Jumlah node tidak valid.\n");
             return 1;        }
         int i = 1;
+        printf ("root adalah nomor atau node 1\n");
         while (i <= num_nodes){
+            printf ("\nJika tidak ada maka isi 0\n");
             printf("Masukkan nama untuk node %d: ", i);
             scanf(" %c", &alldata[i].info);
             printf("Masukkan nomor first son untuk node %d: ", i);
