@@ -17,7 +17,7 @@ void Create_tree(Isi_Tree X, int Jml_Node){
     }
 
     int i = 1;
-    while (i <= Jml_Node){
+    while (i <= jml_maks){
         X[i].info = 0;
         X[i].ps_fs = 0;
         X[i].ps_nb = 0;
@@ -96,7 +96,12 @@ void Level_order(Isi_Tree X, int Maks_node) {
 
     address queue[jml_maks + 1];
     bool visited[jml_maks + 1];
-    for (int i = 0; i <= jml_maks; i++) visited[i] = false;
+
+    int i=0;
+    while (i<=jml_maks){
+        visited[i] = false;
+        i++;
+    }
     int front = 0;
     int rear = 0;
 
@@ -135,14 +140,18 @@ void PrintTree(Isi_Tree P, const char* filename) {
     if (IsEmpty(P)) {
         fprintf(fp, "  empty;\n");
     } else {
-        for (int i = 1; i <= jml_maks; i++) {
+        int i=1;
+        while (i<=jml_maks) {
             if (P[i].info != 0) {
                 address child = P[i].ps_fs;
-                while (child != 0) {
+                while (child != 0 && child <=jml_maks) {
+                    if (P[child].info != 0){
                     fprintf(fp, "  %c -> %c;\n", P[i].info, P[child].info);
+                    }
                     child = P[child].ps_nb;
                 }
             }
+            i++;
         }
     }
     fprintf(fp, "}\n");
@@ -201,10 +210,13 @@ int nbElmt (Isi_Tree P){
 
 int nbDaun(Isi_Tree P) {
     int count = 0;
-    for (int i = 1; i <= jml_maks; i++) {
+    int i=1;
+    while (i<=jml_maks)
+    {
         if (P[i].info != 0 && P[i].ps_fs == 0) {
             count++;
         }
+        i++;
     }
     return count;
 
