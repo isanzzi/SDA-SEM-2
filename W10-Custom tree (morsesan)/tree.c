@@ -2,7 +2,7 @@
 
 address Create_node (infotype info){
 	address temp = (address) malloc (sizeof(nbtree));
-	if (!isEmpty(temp)){
+	if (!IsEmpty(temp)){
 		temp->info = info;
 		temp->left = NULL;
 		temp->right = NULL;
@@ -36,42 +36,6 @@ void InOrder (address P){
     InOrder (P->right);
 }
 
-//Generate Graphviz
-void PrintTree(address P, const char* filenameinput, const char* filenameoutput) {
-    FILE *fp = fopen(filenameinput, "r");
-    FILE *fr = fopen(filenameoutput, "w");
-    if (fp == NULL) {
-        printf("error acces input.txt\n");
-        return;
-    }
-    if (fr == NULL) {
-        printf ("error acces output.txt\n");
-        return;
-    }
-    
-
-    fprintf(fp, "digraph NonBinaryTree {\n");
-    if (IsEmpty(P)) {
-        fprintf(fp, "  empty;\n");
-    } else {
-        int i=1;
-        while (i<=jml_maks) {
-            if (P[i].info != 0) {
-                address child = P[i].ps_fs;
-                while (child != 0 && child <=jml_maks) {
-                    if (P[child].info != 0){
-                    fprintf(fp, "  %c -> %c;\n", P[i].info, P[child].info);
-                    }
-                    child = P[child].ps_nb;
-                }
-            }
-            i++;
-        }
-    }
-    fprintf(fp, "}\n");
-    fclose(fp);
-}
-
 void ClearTree (address *root){
     if (root== NULL){
         printf ("no tree\n");
@@ -93,29 +57,92 @@ void ClearTree (address *root){
     *root = NULL;
 }
 
-void convertstring (address P, char *str){
-    int i=0;
-    while (str[i]!='\0'){ // selama belum enter
-        if (str[i]== ' '){
-            printf("  "); //space antar kata
-            continue;
-        }
-        char temp= toupper(str[i]);
-        getMorseCode (P, temp);
-        printf(" "); //between char
-        i++;
-    }
-    printf ("\n");
-}
+// void convertstring (address P, char *str){
+//     int i=0;
+//     while (str[i]!='\0'){ // selama belum enter
+//         if (str[i]== ' '){
+//             printf("/"); //space antar kata
+//             continue;
+//         }
+//         char temp= toupper(str);
+//         printf(" "); //between char
+//         i++;
+//     }
+//     printf ("\n");
+// }
 
-void getMorseCode (address P, char target){
-    if (IsEmpty (P)){
+void txtstringtomorse (address head){
+    FILE *fr = fopen ("input.txt", "r");
+    FILE *fw = fopen ("output.txt", "w");
+    if (fr == NULL || fw == NULL){
+        printf ("error opening file\n");
         return;
     }
+    char buffer [1000]= {0};
+    int index=0;
+    int c;
+    
+    while ((c = fgetc(fr)) != EOF && index < 1000) {
+        buffer [index++] = (char) c;
+    }
+    buffer [index]= '\0';
+
+    toupperstring (buffer);
+
+    char output[2000] = {0};
+
+    stringtomorse (head, head, buffer, output);
+
+    fprintf(fw, "%s", output);
+    printf ("konversi input.txt to ouput.txt success\n");
+    fclose(fr);
+    fclose(fw);
 }
 
-void printMorseCode (address P, char target){
-    if ()
+void stringtomorse(address root, address p, char *str, char *hasil) {
+    if (*str == '\0') {
+        return;
+    }
+    if (*str == ' ') {
+        if (p != NULL) {
+            int len = (int) strlen (hasil);
+            hasil[len]=p->info;
+            hasil [len+1]= '\0';
+        }
+        stringtomorse(root, root, str + 1, hasil); // reset
+    }
+    else if (*str == '/') {
+        int len = (int) strlen (hasil);
+        hasil[len]=' ';
+        hasil[len+1]='\0';
+        hasil=" ";
+        stringtomorse(root, root, str + 1, hasil); // reset
+    }
+    else if (*str == 'r') {
+        if (p != NULL) {
+            stringtomorse(root, p->left, str + 1, hasil);
+        } else {
+            stringtomorse(root, NULL, str + 1, hasil);
+        }
+    }
+    else if (*str == 'n') {
+        if (p != NULL) {
+            stringtomorse(root, p->right, str + 1, hasil);
+        } else {
+            stringtomorse(root, NULL, str + 1, hasil);
+        }
+    }
+    else {
+        stringtomorse(root, p, str + 1, hasil); //erorr e
+    }
+}
+
+void toupperstring (char *str){
+    int i=0;
+    while (str[i]!= '\0'){
+        str[i] = (char)toupper((unsigned char)str[i]);
+        i++;
+    }
 }
 
 void initialize_tree(address *root) {
@@ -193,7 +220,7 @@ void initialize_tree(address *root) {
     T->right=satu;
     U->right=Y;
     V->right=X;
-    Y->right=0;
+    Y->right=nol;
     satu->right=lima;
     dua->right=empat;
     lima->right=sembilan;

@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
 //Maksimal node yang dapat ditampung dalam array
 #define jml_maks 20
@@ -85,5 +87,10 @@ void PrintTree (address P, const char* filenameinput, const char* filenameoutput
 // /* Mengirimkan Nilai terbesar dari dua data */
 
 void initialize_tree(address *root);
+void ClearTree (address *root);
+// void convertstring (address P, char *str);
+void txtstringtomorse (address head);
+void stringtomorse (address root, address p, char *str, char *hasil);
+void toupperstring (char *str);
 
 #endif
