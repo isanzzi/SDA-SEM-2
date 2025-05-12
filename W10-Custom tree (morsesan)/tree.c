@@ -1,8 +1,8 @@
 #include "tree.h"
 
-address Create_node (infotype info){
+address Create_node (infoelmt info){
 	address temp = (address) malloc (sizeof(nbtree));
-	if (!IsEmpty(temp)){
+	if (temp != NULL){
 		temp->info = info;
 		temp->left = NULL;
 		temp->right = NULL;
@@ -37,7 +37,7 @@ void InOrder (address P){
 }
 
 void ClearTree (address *root){
-    if (root== NULL){
+    if (root== NULL || *root == NULL){
         printf ("no tree\n");
     }
 
@@ -57,83 +57,143 @@ void ClearTree (address *root){
     *root = NULL;
 }
 
-// void convertstring (address P, char *str){
-//     int i=0;
-//     while (str[i]!='\0'){ // selama belum enter
-//         if (str[i]== ' '){
-//             printf("/"); //space antar kata
-//             continue;
-//         }
-//         char temp= toupper(str);
-//         printf(" "); //between char
-//         i++;
-//     }
-//     printf ("\n");
-// }
-
-void txtstringtomorse (address head){
-    FILE *fr = fopen ("input.txt", "r");
-    FILE *fw = fopen ("output.txt", "w");
-    if (fr == NULL || fw == NULL){
-        printf ("error opening file\n");
+void stringtomorse(address root, char *string, char *hasil) {
+    if (string == NULL || hasil == NULL) {
+        printf("invalid parameter\n");
         return;
     }
-    char buffer [1000]= {0};
-    int index=0;
-    int c;
-    
-    while ((c = fgetc(fr)) != EOF && index < 1000) {
-        buffer [index++] = (char) c;
+
+    int resultIndex = 0;
+
+    while (*string != '\0') {
+        char currentChar = (char)toupper((unsigned char)*string);
+        Stack top;
+        createinitStack(&top);
+
+        if (findcharintree(root, currentChar, &top)) {
+            char tempCodes[50];
+            int tempIndex = 0;
+            
+            // Pop all
+            while (!StackEmpty(&top)) {
+                infoelmt code;
+                Pop(&top, &code);
+                tempCodes[tempIndex++] = code; //insert pop ke tempcode
+            }
+            
+            //print hasil stack tersebut ke hasil, tidak usah reverse
+            //karena stack = insertawal + traversal = child-root
+            //sehingga menghasilkan urutan dari root-traversal
+            printf("Char '%c' Morse: ", currentChar);
+            int i=0;
+            while (i<tempIndex){
+                hasil[resultIndex++] = tempCodes[i];
+                printf("%c", tempCodes[i]);
+                i++;
+            }
+            hasil[resultIndex++] = '/'; // pemisah kata
+        }
+        string++;
     }
-    buffer [index]= '\0';
 
-    toupperstring (buffer);
+    if (resultIndex > 0 && hasil[resultIndex - 1] == '/') {
+        resultIndex--; // agar menghilangkan slash di akhir kalimat
+    }
 
-    char output[2000] = {0};
-
-    stringtomorse (head, head, buffer, output);
-
-    fprintf(fw, "%s", output);
-    printf ("konversi input.txt to ouput.txt success\n");
-    fclose(fr);
-    fclose(fw);
+    hasil[resultIndex] = '\0';
 }
 
-void stringtomorse(address root, address p, char *str, char *hasil) {
-    if (*str == '\0') {
+bool findcharintree(address head, char target, Stack *S) {
+    if (head == NULL) {
+        return false;
+    }
+    if (head->info == target) {
+        printf("[Find] Character '%c' found\n", target);
+        return true;
+    }
+    
+    if (findcharintree(head->left, target, S)) {
+        Push(S, 'r');
+        printf("[Find] Adding 'r' to path for '%c'\n", target);
+        return true;
+    }
+
+    if (findcharintree(head->right, target, S)) {
+        Push(S, 'n');
+        printf("[Find] Adding 'n' to path for '%c'\n", target);
+        return true;
+    }
+
+    return false;
+}
+
+void txtmorsetostring(address head) {
+    FILE *fr = fopen("input.txt", "r");
+    FILE *fw = fopen("output.txt", "w");
+    if (fr == NULL || fw == NULL) {
+        printf("Error opening file\n");
         return;
     }
-    if (*str == ' ') {
-        if (p != NULL) {
-            int len = (int) strlen (hasil);
-            hasil[len]=p->info;
-            hasil [len+1]= '\0';
+    
+    char buffer[1000];
+    while (fgets(buffer, sizeof(buffer), fr) != NULL) {
+        // Hilangkan newline dari buffer jika ada
+        size_t len = strlen(buffer);
+        if (len > 0 && buffer[len - 1] == '\n') {
+            buffer[len - 1] = '\0';
         }
-        stringtomorse(root, root, str + 1, hasil); // reset
+        
+        toupperstring(buffer);
+        char output[2000] = {0};
+        
+        stringtomorse(head, buffer, output);
+        
+        // Tulis ke file output dan newlinenya
+        fprintf(fw, "%s\n", output);
     }
-    else if (*str == '/') {
-        int len = (int) strlen (hasil);
-        hasil[len]=' ';
-        hasil[len+1]='\0';
-        hasil=" ";
-        stringtomorse(root, root, str + 1, hasil); // reset
+    
+    fclose(fr);
+    fclose(fw);
+    printf("Konversi input.txt ke output.txt sukses\n");
+}
+
+void morsetostring(address root, address p, char *str, char *hasil) {
+    if (*str == '\0') { //end string
+        if (p != NULL && p->info != 0) {
+            int len = (int) strlen(hasil);
+            hasil[len] = p->info; 
+            hasil[len+1] = '\0';
+        }
+        return;//jika diakhir string agar bisa end recur
+    }
+    else if (*str == '/') { //slash buat reset root dan tampilkan
+        if (p != NULL && p->info != 0) {
+            int len = (int) strlen(hasil);
+            hasil[len] = p->info;
+            hasil[len+1] = '\0';
+        }
+        
+        // Add space and reset to root
+        int len = (int) strlen(hasil);
+        hasil[len+1] = '\0';
+        morsetostring(root, root, str + 1, hasil); //reset root
     }
     else if (*str == 'r') {
         if (p != NULL) {
-            stringtomorse(root, p->left, str + 1, hasil);
+            morsetostring(root, p->left, str + 1, hasil);
         } else {
-            stringtomorse(root, NULL, str + 1, hasil);
+            morsetostring(root, NULL, str + 1, hasil);
         }
     }
     else if (*str == 'n') {
         if (p != NULL) {
-            stringtomorse(root, p->right, str + 1, hasil);
+            morsetostring(root, p->right, str + 1, hasil);
         } else {
-            stringtomorse(root, NULL, str + 1, hasil);
+            morsetostring(root, NULL, str + 1, hasil);
         }
     }
-    else {
-        stringtomorse(root, p, str + 1, hasil); //erorr e
+    else {// exception error
+        morsetostring(root, p, str + 1, hasil);
     }
 }
 
@@ -188,7 +248,7 @@ void initialize_tree(address *root) {
     address space = Create_node(' ');
 
     (*root)->left = A;
-    (*root)->right = B;
+    (*root)->right = T;
     
     A->left=B;
     B->left=C;
