@@ -30,7 +30,7 @@ int main() {
                 printf("Converting '%s' to Morse code:\n", str);
                 toupperstring (str);
                 stringtomorse (root, str, hasil);
-                printf ("%s\n", hasil);
+                printf ("\n%s\n", hasil);
                 break;
             }
             case 3:{

@@ -154,7 +154,7 @@ void txtmorsetostring(address head) {
     
     fclose(fr);
     fclose(fw);
-    printf("Konversi input.txt ke output.txt sukses\n");
+    printf("\nKonversi input.txt ke output.txt sukses\n");
 }
 
 void morsetostring(address root, address p, char *str, char *hasil) {
