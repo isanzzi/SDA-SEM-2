@@ -9,7 +9,7 @@ int main() {
     int mode;
     bool lanjut=true;
     while (lanjut==true){
-    	printf("Pilih mode:\n1. Array\n2. DLL\n3. SLL\nPilihan: ");
+    	printf("Pilih mode:\n1. Array\n2. DLL\n3. SLL\n0. Exit\nPilihan: ");
 	    scanf("%d", &mode);
 	    getchar();
 	    if (mode == 1) {
