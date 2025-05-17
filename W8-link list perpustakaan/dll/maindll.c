@@ -228,7 +228,7 @@ void maindll() {
 	}
     
     freeBuku(&headbuku);
-    headbuku = NULL; // Tambahkan baris ini agar pointer tidak dangling
+    headbuku = NULL;
     address temp;
     while (allanggota != NULL) {
         temp = allanggota;
@@ -236,5 +236,5 @@ void maindll() {
         freeHistory(&temp->history);
         free(temp);
     }
-    allanggota = NULL; // Tambahkan baris ini agar pointer tidak dangling
+    allanggota = NULL;
 }
