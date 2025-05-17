@@ -171,7 +171,9 @@ int mainsll() {
             case 0: {
                 printf("Terima kasih telah menggunakan sistem perpustakaan.\n");
                 freeBukusll(&headbuku);
+                headbuku = NULL;
                 DeAlokasisll(&allanggota);
+                allanggota = NULL;
                 clearAllPairssll();
                 printf("\nAnda telah selesai menggunakan perpustakaan bertipe single linked list\n sekarang kembali ke menu");
                 return 0;

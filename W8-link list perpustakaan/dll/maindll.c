@@ -26,11 +26,11 @@ void maindll() {
 	getchar();
     if (otomatis=='y'){
         otomatisdll(&headbuku, &allanggota); // Pass addresses agar bisa lanjut kalau mau lanjut
-		printf("apakah anda ingin mereset ulang semua buku? (y/n)\nMasukkan jawaban anda : ");
-		char reset;
-		scanf("%c", &reset);
-		getchar();
-		if (reset=='y'){
+        printf("Apakah Anda ingin melanjutkan dengan data dari test case? (y/n)\nMasukkan jawaban anda : ");
+        char reset;
+        scanf("%c", &reset);
+        getchar();
+        if (reset=='y'){
             address temp;
             while (allanggota != NULL) {
                 temp = allanggota;
@@ -39,7 +39,10 @@ void maindll() {
                 free(temp);
             }
             allanggota = NULL;
-		}
+        }
+        if (reset == 'n') {
+            return;
+        }
     }
 
 	boolean lanjut=true;
@@ -225,7 +228,7 @@ void maindll() {
 	}
     
     freeBuku(&headbuku);
-    
+    headbuku = NULL; // Tambahkan baris ini agar pointer tidak dangling
     address temp;
     while (allanggota != NULL) {
         temp = allanggota;
@@ -233,4 +236,5 @@ void maindll() {
         freeHistory(&temp->history);
         free(temp);
     }
+    allanggota = NULL; // Tambahkan baris ini agar pointer tidak dangling
 }

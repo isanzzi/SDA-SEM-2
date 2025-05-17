@@ -86,6 +86,7 @@ void mainarray() {
             allanggota = NULL;
 
             printf("Data telah direset.\n");
+            return;
         }
     }
 
@@ -339,7 +340,7 @@ void mainarray() {
     }
 
     freeBukuArray(buku, bukuCount);
-
+    headbuku = NULL;
     addressarray temp;
     while (allanggota != NULL) {
         temp = allanggota;
@@ -347,6 +348,7 @@ void mainarray() {
         freeHistoryArray(&temp->history);
         free(temp);
     }
+    allanggota = NULL;
 }
 
 void otomatisarray(Bukuarray buku[], addressarray *allAnggota, int *pBukuCount, int maxBuku) {
