@@ -206,9 +206,6 @@ void DeAlokasiArray(addressarray *p) {
     while (*p != nil) {
         temp = *p;
         *p = next(temp);
-        if (info(temp) != NULL) {
-            free(info(temp));
-        }
         free(temp);
     }
 }

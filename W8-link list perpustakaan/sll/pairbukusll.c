@@ -67,19 +67,16 @@ PairBukuAnggotasll* findPairBukuAnggotaByAddrsll(addrBukusll book) {
 }
 
 void clearAllPairssll() {
-    // PairBukuAnggotasll* current = pairListHeadsll;
-    // while (current != NULL) {
-    //     PairBukuAnggotasll* next = current->next;
-    // Hanya bebaskan queue jika belum dibersihkan
-    //     if (current->Q.head != NULL || current->Q.tail != NULL) {
-    //         ExitQueuesll(&current->Q);
-    //     }
-    //     if (current->bookTitle != NULL) {
-    //         free(current->bookTitle);
-    //         current->bookTitle = NULL;
-    //     }
-    //     free(current);
-    //     current = next;
-    //}
+    PairBukuAnggotasll* current = pairListHeadsll;
+    while (current != NULL) {
+        PairBukuAnggotasll* next = current->next;
+        // Hanya free bookTitle dan struct pair saja
+        if (current->bookTitle != NULL) {
+            free(current->bookTitle);
+            current->bookTitle = NULL;
+        }
+        free(current);
+        current = next;
+    }
     pairListHeadsll = NULL;
 }

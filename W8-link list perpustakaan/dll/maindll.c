@@ -1,5 +1,4 @@
 #include "convention.h"
-#include "driver.h"
 #include "buku.h"
 #include "linked.h"
 #include "history.h"
@@ -20,30 +19,32 @@ void maindll() {
 	addrBuku headbuku=NULL;
 	address allanggota=NULL;
 	initBuku(&headbuku);
-    printf("apakah anda ingin otomatis mengisi test case? (y/n)\nMasukkan jawaban anda : ");
-    char otomatis;
-    scanf("%c", &otomatis);
-	getchar();
-    if (otomatis=='y'){
-        otomatisdll(&headbuku, &allanggota); // Pass addresses agar bisa lanjut kalau mau lanjut
-        printf("Apakah Anda ingin melanjutkan dengan data dari test case? (y/n)\nMasukkan jawaban anda : ");
-        char reset;
-        scanf("%c", &reset);
-        getchar();
-        if (reset=='y'){
-            address temp;
-            while (allanggota != NULL) {
-                temp = allanggota;
-                allanggota = allanggota->next;
-                freeHistory(&temp->history);
-                free(temp);
-            }
-            allanggota = NULL;
-        }
-        if (reset == 'n') {
-            return;
-        }
-    }
+
+    //dont use contain bug
+    // printf("apakah anda ingin otomatis mengisi test case? (y/n)\nMasukkan jawaban anda : ");
+    // char otomatis;
+    // scanf("%c", &otomatis);
+	// getchar();
+    // if (otomatis=='y'){
+    //     otomatisdll(&headbuku, &allanggota); // Pass addresses agar bisa lanjut kalau mau lanjut
+    //     printf("Apakah Anda ingin melanjutkan dengan data dari test case? (y/n)\nMasukkan jawaban anda : ");
+    //     char reset;
+    //     scanf("%c", &reset);
+    //     getchar();
+    //     if (reset=='y'){
+    //         address temp;
+    //         while (allanggota != NULL) {
+    //             temp = allanggota;
+    //             allanggota = allanggota->next;
+    //             freeHistory(&temp->history);
+    //             free(temp);
+    //         }
+    //         allanggota = NULL;
+    //     }
+    //     if (reset == 'n') {
+    //         return;
+    //     }
+    // }
 
 	boolean lanjut=true;
 	while (lanjut == true){

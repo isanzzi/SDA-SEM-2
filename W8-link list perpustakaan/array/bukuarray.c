@@ -78,7 +78,10 @@ void displayBukuArray(Bukuarray buku[], int count) {
 void freeBukuArray(Bukuarray buku[], int count) {
     int i = 0;
     while (i < count) {
-        free(buku[i].info);
+        if (buku[i].info != NULL) {
+            free(buku[i].info);
+            buku[i].info = NULL;
+        }
         DeAlokasiArray(&(buku[i].Q.head));
         i++;
     }

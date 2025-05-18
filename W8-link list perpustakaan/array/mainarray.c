@@ -44,51 +44,51 @@ void mainarray() {
 
     printf("===== SISTEM PERPUSTAKAAN =====\n");
     bukuCount = 0;
-    printf("apakah anda ingin otomatis mengisi test case? (y/n)\nMasukkan jawaban anda : ");
-    char otomatis;
-    scanf(" %c", &otomatis);
-    getchar();
+    // printf("apakah anda ingin otomatis mengisi test case? (y/n)\nMasukkan jawaban anda : ");
+    // char otomatis;
+    // scanf(" %c", &otomatis);
+    // getchar();
 
-    if (otomatis=='y'){
-        printf("Menjalankan test case otomatis...\n");
-        otomatisarray(buku, &allanggota, &bukuCount, maxbuku);
+    // if (otomatis=='y'){
+    //     printf("Menjalankan test case otomatis...\n");
+    //     otomatisarray(buku, &allanggota, &bukuCount, maxbuku);
 
-        printf("\nApakah Anda ingin melanjutkan dengan data dari test case? (y/n)\nMasukkan jawaban anda : ");
-        char lanjutData;
-        scanf("%c", &lanjutData);
-        getchar();
+    //     printf("\nApakah Anda ingin melanjutkan dengan data dari test case? (y/n)\nMasukkan jawaban anda : ");
+    //     char lanjutData;
+    //     scanf("%c", &lanjutData);
+    //     getchar();
 
-        if (lanjutData == 'n') {
-            // hapus test case
-            int i = 0;
-            while (i < bukuCount) {
-                if (buku[i].info != NULL) {
-                    free(buku[i].info);
-                    buku[i].info = NULL;
-                }
-                buku[i].stock = 0;
-                DeAlokasiArray(&(buku[i].Q.head));
-                createinitQueueArray(&buku[i].Q);
-                i++;
-            }
+    //     if (lanjutData == 'n') {
+    //         // hapus test case
+    //         int i = 0;
+    //         while (i < bukuCount) {
+    //             if (buku[i].info != NULL) {
+    //                 free(buku[i].info);
+    //                 buku[i].info = NULL;
+    //             }
+    //             buku[i].stock = 0;
+    //             DeAlokasiArray(&(buku[i].Q.head));
+    //             createinitQueueArray(&buku[i].Q);
+    //             i++;
+    //         }
 
-            // Reset bukuCount
-            bukuCount = 0;
+    //         // Reset bukuCount
+    //         bukuCount = 0;
 
-            // Reset members list
-            addressarray temp;
-            while (allanggota != NULL) {
-                temp = allanggota;
-                allanggota = allanggota->next;
-                freeHistoryArray(&temp->history);
-                free(temp);
-            }
-            allanggota = NULL;
+    //         // Reset members list
+    //         addressarray temp;
+    //         while (allanggota != NULL) {
+    //             temp = allanggota;
+    //             allanggota = allanggota->next;
+    //             freeHistoryArray(&temp->history);
+    //             free(temp);
+    //         }
+    //         allanggota = NULL;
 
-            printf("Data telah direset.\n");
-            return;
-        }
-    }
+    //         printf("Data telah direset.\n");
+    //         return;
+    //     }
+    // }
 
     boolean lanjut=true;
     while (lanjut == true){
@@ -293,6 +293,9 @@ void mainarray() {
                 infotype canceledInfo;
 
                 if (DeleteValueArray(&bukuTemp->Q.head, canceledName, &canceledInfo)) {
+                    if (bukuTemp->Q.head == NULL) {
+                        bukuTemp->Q.tail = NULL;
+                    }
                     // cari di allanggota atau buat ulang
                     addressarray found = SearchArray(allanggota, canceledName);
                     if (found == NULL) {
@@ -340,15 +343,18 @@ void mainarray() {
     }
 
     freeBukuArray(buku, bukuCount);
-    headbuku = NULL;
-    addressarray temp;
-    while (allanggota != NULL) {
-        temp = allanggota;
-        allanggota = allanggota->next;
-        freeHistoryArray(&temp->history);
-        free(temp);
-    }
-    allanggota = NULL;
+    // headbuku = NULL;
+    // addressarray temp;
+    // while (allanggota != NULL) {
+    //     temp = allanggota;
+    //     allanggota = allanggota->next;
+    //     if (temp->info != NULL) {
+    //         free(temp->info);
+    //         temp->info = NULL;
+    //     }
+    //     free(temp);
+    // }
+    // allanggota = NULL;
 }
 
 void otomatisarray(Bukuarray buku[], addressarray *allAnggota, int *pBukuCount, int maxBuku) {
@@ -469,6 +475,9 @@ void otomatisarray(Bukuarray buku[], addressarray *allAnggota, int *pBukuCount, 
 
     infotype canceledInfo;
     if (DeleteValueArray(&buku2->Q.head, "Umum1", &canceledInfo)) {
+        if (buku2->Q.head == NULL) {
+            buku2->Q.tail = NULL;
+        }
         printf("Pemesanan oleh %s dibatalkan.\n", canceledInfo);
 
         found = SearchArray(*allAnggota, canceledInfo);
