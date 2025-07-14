@@ -343,18 +343,16 @@ void mainarray() {
     }
 
     freeBukuArray(buku, bukuCount);
-    // headbuku = NULL;
-    // addressarray temp;
-    // while (allanggota != NULL) {
-    //     temp = allanggota;
-    //     allanggota = allanggota->next;
-    //     if (temp->info != NULL) {
-    //         free(temp->info);
-    //         temp->info = NULL;
-    //     }
-    //     free(temp);
-    // }
-    // allanggota = NULL;
+    headbuku = NULL;
+    addressarray temp;
+    while (allanggota != NULL) {
+        temp = allanggota;
+        allanggota = allanggota->next;
+        //tidak usah free info karena info sudah di free saat freebukuarray ataupun saat prosesbuku
+        temp->info = NULL;
+        free(temp);
+    }
+    allanggota = NULL;
 }
 
 void otomatisarray(Bukuarray buku[], addressarray *allAnggota, int *pBukuCount, int maxBuku) {
